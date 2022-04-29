@@ -195,6 +195,9 @@ def _import_harvester_cluster_into_rancher(request, admin_session,
     _wait_for_cluster_ready(request, rancher_admin_session,
                             rancher_api_endpoints, cluster_name)
 
+    image_upload_json = utils.create_image_upload(request, admin_session, harvester_api_endpoints)
+    assert image_upload_json is not None
+
     return (cluster_id, cluster_name)
 
 
@@ -542,3 +545,19 @@ class TestRancherIntegrationWithExternalRancher:
         # NOTE(gyee): if rke2_cluster fixture is successfully created that
         # means we're golden
         pass
+
+
+
+############ RKE1
+    # nodeTemplateSpec:
+    #     cloudCredentialName: cattle-global-data:cc-btwl4
+    #     description: ""
+    #     displayName: ""
+    #     driver: harvester
+    #     engineInstallURL: https://releases.rancher.com/install-docker/20.10.sh
+    #     useInternalIpAddress: true
+# Error with pre-create check: "Get \"https://helm-install.test/k8s/clusters/c-m-mvtfjqkw/apis/harvesterhci.io/v1beta1/settings/server-version\": dial tcp: lookup helm-install.test on 10.43.0.10:53: server misbehaving":Timeout waiting for ssh key
+## RKE 2 
+## Images:  default/1578c1dd3a19425784ba925243d762fe
+## is that Image === SLES15-SP3-JeOS.x86_64-15.3-OpenStack-Cloud-GM.qcow2
+## https://download.opensuse.org/repositories/Cloud:/Images:/Leap_15.3/images/openSUSE-Leap-15.3.x86_64-NoCloud.qcow2 

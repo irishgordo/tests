@@ -1148,8 +1148,10 @@ def create_image_upload(request, admin_session, harvester_api_endpoints,
 
     cache_url = request.config.getoption('--image-cache-url')
 
-    base_url = ('http://download.opensuse.org/repositories/Cloud:/Images:/'
-                'Leap_15.2/images')
+    # base_url = ('http://download.opensuse.org/repositories/Cloud:/Images:/'
+    #             'Leap_15.2/images')
+    
+    base_url = ('http://192.168.0.254/harvester/')
     if cache_url:
         base_url = cache_url
     url = os.path.join(base_url, 'openSUSE-Leap-15.2.x86_64-NoCloud.qcow2')

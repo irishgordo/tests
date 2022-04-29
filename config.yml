@@ -1,11 +1,11 @@
 # Harvester API endpoint
-endpoint: 'https://localhost:30443'
+endpoint: 'https://192.168.0.131'
 
 #Harvester username
 username: 'admin'
 
 #Harvester password
-password: 'password1234'
+password: 'testtesttest'
 
 #Do not cleanup the test artifacts
 do-not-cleanup: False
@@ -49,10 +49,10 @@ backup-scripts-location: 'backup_restore_test_artifacts'
 rancher-version: 'v2.6-head'
 
 # External Rancher endpoint
-#rancher-endpoint: 'https://127.0.0.1
+rancher-endpoint: 'https://helm-install.test'
 
 # External Rancher admin user password
-#rancher-admin-password: 'rancher_password'
+rancher-admin-password: 'testtesttest'
 
 # Kubernetes version to use for Rancher integration tests
 kubernetes-version: 'v1.21.10+rke2r2'
