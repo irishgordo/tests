@@ -34,37 +34,45 @@
   vars:
     JENKINS_AUTH_USERNAME: "{{ JENKINS_BOOTSTRAP_USERNAME }}"
     JENKINS_AUTH_PASSWORD: "{{ JENKINS_BOOTSTRAP_PASSWORD }}"
+# java -jar jenkins-plugin-manager-2.12.6.jar --war /usr/share/java/jenkins.war -d /var/lib/jenkins/plugins --plugins job-dsl:1.78.1 --verbose
 
-- name: jenkins | install_jenkins | Install Jenkins plugins
+- name: jenkins | install_jenkins | Install Jenkins Plugin CLI Tool
+  get_url:
+    url: https://github.com/jenkinsci/plugin-installation-manager-tool/releases/download/2.12.6/jenkins-plugin-manager-2.12.6.jar
+    dest: /var/lib/jenkins/jenkins-plugin-manager-2.12.6.jar
+
+# plugins don't play nice with each other if we don't pin the versions, trying to version to versions that were available in 2021 December
+- name: jenkins | install_jenkins | Install Jenkins Plugins
   shell: >
-    /usr/bin/jenkins install-plugin {{ item }}
+    /usr/bin/java -jar /var/lib/jenkins/jenkins-plugin-manager-2.12.6.jar --war /usr/share/java/jenkins.war -d /var/lib/jenkins/plugins --plugins {{ item }} --verbose
   with_items:
-    - ansible
-    - authorize-project
-    - build-timeout
-    - blueocean
-    - bootstrap5-api
-    - configuration-as-code
-    - credentials-binding
-    - email-ext
-    - ghprb
-    - git
-    - github-branch-source
-    - github-oauth
-    - htmlpublisher
-    - job-dsl
-    - ldap
-    - mailer
-    - matrix-auth
-    - pam-auth
-    - pipeline-github-lib
-    - pipeline-stage-view
-    - ssh-slaves
-    - timestamper
-    - workflow-aggregator
-    - workflow-cps
-    - workflow-job
-    - ws-cleanup
+    - ansible:1.1
+    - authorize-project:1.4.0
+    - build-timeout:1.20
+    - blueocean:1.25.0
+    - bootstrap5-api:5.1.3-4
+    - configuration-as-code:1.55.1
+    - credentials-binding:1.27.1
+    - email-ext:2.86
+    - ghprb:1.16-8
+    - git:4.10.2
+    - github-branch-source:2.11.4
+    - github-oauth:0.37
+    - htmlpublisher:1.28
+    - job-dsl:1.78.3
+    - ldap:2.7
+    - mailer:1.34.2
+    - matrix-auth:3.0
+    - pam-auth:1.6.1
+    - pipeline-github-lib:1.0
+    - pipeline-stage-view:2.20
+    - rebuild:1.34
+    - ssh-slaves:1.33.0
+    - timestamper:1.15
+    - workflow-aggregator:2.6
+    - workflow-cps:2646.v6ed3b5b01ff1
+    - workflow-job:1145.v7f2433caa07
+    - ws-cleanup:0.39
 
 - name: jenkins | install_jenkins | Remove Jenkins security bootstrap scripts
   file:
