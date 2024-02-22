@@ -1,3 +1,4 @@
+#!/usr/bin/python3.10
 import docker
 import argparse
 import asyncio
