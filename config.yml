@@ -1,7 +1,7 @@
 # Harvester Cluster
-endpoint: 'https://localhost'
+endpoint: 'https://10.115.8.170'
 username: 'admin'
-password: 'password1234'
+password: 'testtesttest'
 # Be used to access Harvester node, fill in one of following is enough.
 host-password: ''
 host-private-key: ''
@@ -71,3 +71,21 @@ upgrade-iso-url: ""
 upgrade-iso-checksum: ""
 # Based on the number of nodes, i.e., upgrade-wait-timeout * 3 nodes
 upgrade-wait-timeout: 7200
+
+# VM Import Settings
+openstack-ubuntu-image-url: http://10.115.1.6/iso/vm-import/openstack/jammy-openstack.qcow2
+openstack-ubuntu-file-holding-md5sum: '/etc/md5sum-of-hello-txt-to-compare.txt'
+openstack-ubuntu-file-to-audit-with-md5sum: '/etc/hello.txt'
+openstack-ubuntu-file-to-audit-expected-content: 'hello'
+
+# OpenStack Settings
+openstack-clouds-yaml-file-location: http://10.115.1.6/iso/vm-import/clouds.yaml
+openstack-admin-password: testtesttest
+openstack-op-vol-timeout: 300
+openstack-op-vol-step-time: 10
+openstack-op-inst-timeout: 300
+openstack-op-inst-step-time: 10
+openstack-op-img-timeout: 300
+openstack-op-img-step-time: 10
+openstack-default-flavor-name: 'ds1G'
+openstack-default-network-name: 'shared'

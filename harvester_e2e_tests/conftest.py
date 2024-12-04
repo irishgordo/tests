@@ -286,6 +286,90 @@ def pytest_addoption(parser):
         default=config_data.get('opensuse-checksum'),
         help=('Checksum for opensuse_image')
     )
+    parser.addoption(
+        '--openstack-ubuntu-image-url',
+        action='store',
+        default=config_data.get('openstack-ubuntu-image-url'),
+        help=('The image URL for the OpenStack Ubuntu Image')
+    )
+    parser.addoption(
+        '--openstack-ubuntu-file-holding-md5sum',
+        action='store',
+        default=config_data.get('openstack-ubuntu-file-holding-md5sum'),
+        help=('The MD5SUM file to read to ensure data integrity for ubuntu openstack')
+    )
+    parser.addoption(
+        '--openstack-ubuntu-file-to-audit-with-md5sum',
+        action='store',
+        default=config_data.get('openstack-ubuntu-file-to-audit-with-md5sum'),
+        help=('The file that we will analyze with md5sum for ubuntu openstack')
+    )
+    parser.addoption(
+        '--openstack-ubuntu-file-to-audit-expected-content',
+        action='store',
+        default=config_data.get('openstack-ubuntu-file-to-audit-expected-content'),
+        help=('The content of the ubuntu openstack file that we can expect if checked')
+    )
+    parser.addoption(
+        '--openstack-clouds-yaml-file-location',
+        action='store',
+        default=config_data.get('openstack-clouds-yaml-file-location'),
+        help=('The openstack clouds yaml file location to download and leverage for credentials')
+    )
+    parser.addoption(
+        '--openstack-admin-password',
+        action='store',
+        default=config_data.get('openstack-admin-password'),
+        help=('The default admin password for openstack')
+    )
+    parser.addoption(
+        '--openstack-op-vol-timeout',
+        action='store',
+        default=config_data.get('openstack-op-vol-timeout'),
+        help=('Volume Operations on OpenStack Timeout')
+    )
+    parser.addoption(
+        '--openstack-op-vol-step-time',
+        action='store',
+        default=config_data.get('openstack-op-vol-step-time'),
+        help=('Volume Operations on OpenStack Time Per Step')
+    )
+    parser.addoption(
+        '--openstack-op-inst-timeout',
+        action='store',
+        default=config_data.get('openstack-op-inst-timeout'),
+        help=('Instance Operations on OpenStack Timeout')
+    )
+    parser.addoption(
+        '--openstack-op-inst-step-time',
+        action='store',
+        default=config_data.get('openstack-op-inst-step-time'),
+        help=('Instance Operations on OpenStack Time Per Step')
+    )
+    parser.addoption(
+        '--openstack-op-img-timeout',
+        action='store',
+        default=config_data.get('openstack-op-img-timeout'),
+        help=('Image Operations on OpenStack Timeout')
+    )
+    parser.addoption(
+        '--openstack-op-img-step-time',
+        action='store',
+        default=config_data.get('openstack-op-img-step-time'),
+        help=('Image Operations on OpenStack Time Per Step')
+    )
+    parser.addoption(
+        '--openstack-default-flavor-name',
+        action='store',
+        default=config_data.get('openstack-default-flavor-name'),
+        help=('OpenStack default flavor name to use for provisioning OpenStack VMs')
+    )
+    parser.addoption(
+        '--openstack-default-network-name',
+        action='store',
+        default=config_data.get('openstack-default-network-name'),
+        help=('OpenStack default network name to use')
+    )
 
 
 def pytest_configure(config):

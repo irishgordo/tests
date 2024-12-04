@@ -22,5 +22,6 @@ lxml
 pyyaml
 pdoc3
 tox
+openstacksdk == 4.1.0
 dataclasses; python_version < '3.7'
 -e ./apiclient

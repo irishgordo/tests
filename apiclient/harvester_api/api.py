@@ -75,6 +75,8 @@ class HarvesterAPI:
         self.vm_snapshots = mgrs.VirtualMachineSnapshotManager.for_version(version)(self, version)
         self.scs = mgrs.StorageClassManager.for_version(version)(self, version)
         self.addons = mgrs.AddonManager.for_version(version)(self, version)
+        self.secrets = mgrs.SecretsManager.for_version(version)(self, version)
+        self.openstacksource = mgrs.OpenStackSourceManager.for_version(version)(self, version)
         # not available in dashboard
         self.versions = mgrs.VersionManager.for_version(version)(self, version)
         self.upgrades = mgrs.UpgradeManager.for_version(version)(self, version)

@@ -32,6 +32,8 @@ class HarvesterAPI:
     backups: managers.BackupManager
     vm_snapshots: managers.VirtualMachineSnapshotManager
     scs: managers.StorageClassManager
+    secrets: managers.SecretsManager
+    openstacksource: managers.OpenStackSourceManager
 
     versions: managers.VersionManager
     upgrades: managers.UpgradeManager

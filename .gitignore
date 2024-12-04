@@ -24,3 +24,7 @@ test_result.json
 public
 *.hugo_build.lock
 *.package-lock.json
+packer_helpers/output
+packer_helpers/cidata.iso
+packer_helpers/meta-data
+packer_helpers/user-data
