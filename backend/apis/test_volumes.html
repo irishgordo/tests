@@ -2,18 +2,32 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.10.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
 <title>harvester_e2e_tests.apis.test_volumes API documentation</title>
-<meta name="description" content="" />
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
-<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
-<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
-<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
-<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
 <style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
-<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
 </head>
 <body>
 <main>
@@ -22,692 +36,413 @@
 <h1 class="title">Module <code>harvester_e2e_tests.apis.test_volumes</code></h1>
 </header>
 <section id="section-intro">
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python"># Copyright (c) 2021 SUSE LLC
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of version 3 of the GNU General Public License as
-# published by the Free Software Foundation.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, contact SUSE LLC.
-#
-# To contact SUSE about this file by physical or electronic mail,
-# you may find current contact information at www.suse.com
-
-from harvester_e2e_tests import utils
-import polling2
-import yaml
-import pytest
-
-
-pytest_plugins = [
-    &#39;harvester_e2e_tests.fixtures.api_endpoints&#39;,
-    &#39;harvester_e2e_tests.fixtures.volume&#39;,
-    &#39;harvester_e2e_tests.fixtures.session&#39;,
-    &#39;harvester_e2e_tests.fixtures.image&#39;,
-]
-
-
-def test_create_volume_missing_size(admin_session, harvester_api_endpoints):
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    del request_json[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;][&#39;storage&#39;]
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              json=request_json)
-    assert resp.status_code == 422, (
-        &#39;Expected HTTP 422 when attempting to create volume without &#39;
-        &#39;specifying storage size: %s&#39; % (resp.content))
-
-
-def test_create_volume_missing_name(admin_session, harvester_api_endpoints):
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    del request_json[&#39;metadata&#39;][&#39;name&#39;]
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              json=request_json)
-    assert resp.status_code == 422, (
-        &#39;Expected HTTP 422 when attempting to create volume without &#39;
-        &#39;specifying a name: %s&#39; % (resp.content))
-    response_data = resp.json()
-    assert &#39;name or generateName is required&#39; in response_data[&#39;message&#39;]
-
-
-@pytest.mark.volumes_p1
-@pytest.mark.p1
-def test_create_volumes(volume):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-02-Create Volume root disk blank YAML
-        vol-14-Delete volume that is not attached to a VM
-    &#34;&#34;&#34;
-    # NOTE: if the volume is successfully create that means the test is good
-    pass
-
-
-@pytest.mark.volumes_p1
-@pytest.mark.p1
-def test_create_volume_image_form(volume_image_form):
-    # NOTE: if the volume is successfully create that means the test is good
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-03-Create volume root disk VM Image Form
-    &#34;&#34;&#34;
-    pass
-
-
-@pytest.mark.volumes_p1
-@pytest.mark.p1
-def test_create_volume_by_yaml(request, admin_session,
-                               harvester_api_endpoints):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-02-Create Volume root disk blank YAML
-    &#34;&#34;&#34;
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              data=yaml.dump(request_json, sort_keys=False),
-                              headers={&#39;Content-Type&#39;: &#39;application/yaml&#39;})
-    assert resp.status_code == 201, (
-        &#39;Failed to create volume with YAML request: %s&#39; % (resp.content))
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;])
-    validate_blank_volumes(request, admin_session, view_endpoint)
-    resp = admin_session.delete(harvester_api_endpoints.delete_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;]))
-    # FIXME(gyee): we need to figure out why the API can arbitarily return
-    # 200 or 204. It should consistently returning one.
-    assert resp.status_code in [200, 204], &#39;Failed to delete volume: %s&#39; % (
-        resp.content)
-
-
-@pytest.mark.volumes_p1
-@pytest.mark.p1
-def test_create_volume_using_image_by_yaml(request, admin_session,
-                                           harvester_api_endpoints, image):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-04-Create volume root disk VM Image YAML
-    &#34;&#34;&#34;
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    imageid = &#34;/&#34;.join([image[&#39;metadata&#39;][&#39;namespace&#39;],
-                       image[&#39;metadata&#39;][&#39;name&#39;]])
-    request_json[&#39;metadata&#39;][&#39;annotations&#39;][
-        &#39;harvesterhci.io/imageId&#39;] = imageid
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              data=yaml.dump(request_json, sort_keys=False),
-                              headers={&#39;Content-Type&#39;: &#39;application/yaml&#39;})
-    assert resp.status_code == 201, (
-        &#39;Failed to create volume with YAML request: %s&#39; % (resp.content))
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;])
-    validate_blank_volumes(request, admin_session, view_endpoint)
-    resp = admin_session.delete(harvester_api_endpoints.delete_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;]))
-    # FIXME(gyee): we need to figure out why the API can arbitarily return
-    # 200 or 204. It should consistently returning one.
-    assert resp.status_code in [200, 204], &#39;Failed to delete volume: %s&#39; % (
-        resp.content)
-
-
-@pytest.mark.volumes_p2
-@pytest.mark.p2
-def test_create_volume_with_label(request, admin_session,
-                                  harvester_api_endpoints):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-09-Create Volume root disk blank Form with label
-    &#34;&#34;&#34;
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    request_json[&#39;metadata&#39;][&#39;labels&#39;] = {
-        &#39;test.harvesterhci.io&#39;: &#39;for-test&#39;
-    }
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              json=request_json)
-    assert resp.status_code == 201, (
-        &#39;Failed to create volume with labels: %s&#39; % (resp.content))
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;])
-    pvc_json = validate_blank_volumes(request, admin_session, view_endpoint)
-    assert pvc_json[&#39;metadata&#39;][&#39;labels&#39;].get(
-        &#39;test.harvesterhci.io&#39;) == &#39;for-test&#39;
-    resp = admin_session.delete(harvester_api_endpoints.delete_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;]))
-    # FIXME(gyee): we need to figure out why the API can arbitarily return
-    # 200 or 204. It should consistently returning one.
-    assert resp.status_code in [200, 204], &#39;Failed to delete volume: %s&#39; % (
-        resp.content)
-
-
-@pytest.mark.volumes_p2
-@pytest.mark.p2
-def test_create_volume_with_image_label(volume_with_image):
-    # NOTE: if the volume is successfully create that means the test is good
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-10-Create volume root disk VM Image Form with label
-    &#34;&#34;&#34;
-    pass
-
-
-@pytest.mark.volumes_p2
-@pytest.mark.p2
-def test_update_volume_json(request, admin_session,
-                            harvester_api_endpoints, volume):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-05-Edit volume increase size via json
-    &#34;&#34;&#34;
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        volume[&#39;metadata&#39;][&#39;name&#39;])
-    pvc_json = validate_blank_volumes(request, admin_session, view_endpoint)
-    # now try to increase the size
-    pvc_json[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;][&#39;storage&#39;] = &#39;21Gi&#39;
-    resp = utils.poll_for_update_resource(
-        request, admin_session,
-        harvester_api_endpoints.update_volume % (
-            volume[&#39;metadata&#39;][&#39;name&#39;]),
-        pvc_json,
-        harvester_api_endpoints.get_volume % (
-            volume[&#39;metadata&#39;][&#39;name&#39;]))
-    validate_blank_volumes(request, admin_session, view_endpoint)
-    updated_vol_data = resp.json()
-    assert updated_vol_data[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;].get(
-        &#39;storage&#39;) == &#39;21Gi&#39;
-
-
-@pytest.mark.volumes_p2
-@pytest.mark.p2
-def test_update_volume_yaml(request, admin_session,
-                            harvester_api_endpoints, volume):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-05-Edit volume increase size via YAML
-    &#34;&#34;&#34;
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        volume[&#39;metadata&#39;][&#39;name&#39;])
-    pvc_json = validate_blank_volumes(request, admin_session, view_endpoint)
-    # now try to increase the size
-    pvc_json[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;][&#39;storage&#39;] = &#39;22Gi&#39;
-    resp = utils.poll_for_update_resource(
-        request, admin_session,
-        harvester_api_endpoints.update_volume % (
-            volume[&#39;metadata&#39;][&#39;name&#39;]),
-        pvc_json,
-        harvester_api_endpoints.get_volume % (
-            volume[&#39;metadata&#39;][&#39;name&#39;]),
-        use_yaml=True)
-    validate_blank_volumes(request, admin_session, view_endpoint)
-    updated_vol_data = resp.json()
-    assert updated_vol_data[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;].get(
-        &#39;storage&#39;) == &#39;22Gi&#39;
-
-
-def validate_blank_volumes(request, admin_session, get_api_link):
-    pvc_json = None
-
-    def _wait_for_volume_ready():
-        nonlocal pvc_json
-        resp = admin_session.get(get_api_link)
-        if resp.status_code == 200:
-            pvc_json = resp.json()
-            if &#39;status&#39; in pvc_json and pvc_json[&#39;status&#39;][&#39;phase&#39;] == &#39;Bound&#39;:
-                return True
-        return False
-
-    success = polling2.poll(
-        _wait_for_volume_ready,
-        step=5,
-        timeout=request.config.getoption(&#39;--wait-timeout&#39;))
-    assert success, &#39;Timed out while waiting for volume to be ready.&#39;
-    return pvc_json
-
-
-@pytest.mark.terraform_provider_p1
-@pytest.mark.p1
-@pytest.mark.terraform
-def test_create_volume_using_terraform(admin_session, volume_using_terraform):
-    &#34;&#34;&#34;
-    Test creates Terraform Harvester
-    Covers:
-        terraform-provider-07-Harvester volume
-        terraform-provider-10-All resource terraform plan,apply,
-        terraform destroy
-        terraform-provider-01-install, terraform-provider-02-kube config,
-        terraform-provider-03-define
-        kube config
-    &#34;&#34;&#34;
-    # NOTE: the volume_using_terraform fixture will be creating the
-    # volume and check the result
-    pass
-
-
-@pytest.mark.skip(reason=&#39;Timing Issue&#39;)
-@pytest.mark.terraform
-def test_create_vol_with_image_terraform(admin_session,
-                                         volume_with_image_using_terraform):
-    # NOTE: the volume_using_terraform fixture will be creating the
-    # volume and check the result
-    pass</code></pre>
-</details>
 </section>
 <section>
 </section>
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-functions">Functions</h2>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_vol_with_image_terraform"><code class="name flex">
-<span>def <span class="ident">test_create_vol_with_image_terraform</span></span>(<span>admin_session, volume_with_image_using_terraform)</span>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumes"><code class="flex name class">
+<span>class <span class="ident">TestVolumes</span></span>
 </code></dt>
 <dd>
-<div class="desc"></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@pytest.mark.skip(reason=&#39;Timing Issue&#39;)
-@pytest.mark.terraform
-def test_create_vol_with_image_terraform(admin_session,
-                                         volume_with_image_using_terraform):
-    # NOTE: the volume_using_terraform fixture will be creating the
-    # volume and check the result
-    pass</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_volume_by_yaml"><code class="name flex">
-<span>def <span class="ident">test_create_volume_by_yaml</span></span>(<span>request, admin_session, harvester_api_endpoints)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Volume test with image</p>
-<h2 id="covers">Covers</h2>
-<p>vol-02-Create Volume root disk blank YAML</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@pytest.mark.volumes_p1
-@pytest.mark.p1
-def test_create_volume_by_yaml(request, admin_session,
-                               harvester_api_endpoints):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-02-Create Volume root disk blank YAML
-    &#34;&#34;&#34;
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              data=yaml.dump(request_json, sort_keys=False),
-                              headers={&#39;Content-Type&#39;: &#39;application/yaml&#39;})
-    assert resp.status_code == 201, (
-        &#39;Failed to create volume with YAML request: %s&#39; % (resp.content))
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;])
-    validate_blank_volumes(request, admin_session, view_endpoint)
-    resp = admin_session.delete(harvester_api_endpoints.delete_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;]))
-    # FIXME(gyee): we need to figure out why the API can arbitarily return
-    # 200 or 204. It should consistently returning one.
-    assert resp.status_code in [200, 204], &#39;Failed to delete volume: %s&#39; % (
-        resp.content)</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_volume_image_form"><code class="name flex">
-<span>def <span class="ident">test_create_volume_image_form</span></span>(<span>volume_image_form)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Volume test with image</p>
-<h2 id="covers">Covers</h2>
-<p>vol-03-Create volume root disk VM Image Form</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@pytest.mark.volumes_p1
-@pytest.mark.p1
-def test_create_volume_image_form(volume_image_form):
-    # NOTE: if the volume is successfully create that means the test is good
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-03-Create volume root disk VM Image Form
-    &#34;&#34;&#34;
-    pass</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_volume_missing_name"><code class="name flex">
-<span>def <span class="ident">test_create_volume_missing_name</span></span>(<span>admin_session, harvester_api_endpoints)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def test_create_volume_missing_name(admin_session, harvester_api_endpoints):
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    del request_json[&#39;metadata&#39;][&#39;name&#39;]
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              json=request_json)
-    assert resp.status_code == 422, (
-        &#39;Expected HTTP 422 when attempting to create volume without &#39;
-        &#39;specifying a name: %s&#39; % (resp.content))
-    response_data = resp.json()
-    assert &#39;name or generateName is required&#39; in response_data[&#39;message&#39;]</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_volume_missing_size"><code class="name flex">
-<span>def <span class="ident">test_create_volume_missing_size</span></span>(<span>admin_session, harvester_api_endpoints)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def test_create_volume_missing_size(admin_session, harvester_api_endpoints):
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    del request_json[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;][&#39;storage&#39;]
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              json=request_json)
-    assert resp.status_code == 422, (
-        &#39;Expected HTTP 422 when attempting to create volume without &#39;
-        &#39;specifying storage size: %s&#39; % (resp.content))</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_volume_using_image_by_yaml"><code class="name flex">
-<span>def <span class="ident">test_create_volume_using_image_by_yaml</span></span>(<span>request, admin_session, harvester_api_endpoints, image)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Volume test with image</p>
-<h2 id="covers">Covers</h2>
-<p>vol-04-Create volume root disk VM Image YAML</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@pytest.mark.volumes_p1
-@pytest.mark.p1
-def test_create_volume_using_image_by_yaml(request, admin_session,
-                                           harvester_api_endpoints, image):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-04-Create volume root disk VM Image YAML
-    &#34;&#34;&#34;
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    imageid = &#34;/&#34;.join([image[&#39;metadata&#39;][&#39;namespace&#39;],
-                       image[&#39;metadata&#39;][&#39;name&#39;]])
-    request_json[&#39;metadata&#39;][&#39;annotations&#39;][
-        &#39;harvesterhci.io/imageId&#39;] = imageid
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              data=yaml.dump(request_json, sort_keys=False),
-                              headers={&#39;Content-Type&#39;: &#39;application/yaml&#39;})
-    assert resp.status_code == 201, (
-        &#39;Failed to create volume with YAML request: %s&#39; % (resp.content))
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;])
-    validate_blank_volumes(request, admin_session, view_endpoint)
-    resp = admin_session.delete(harvester_api_endpoints.delete_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;]))
-    # FIXME(gyee): we need to figure out why the API can arbitarily return
-    # 200 or 204. It should consistently returning one.
-    assert resp.status_code in [200, 204], &#39;Failed to delete volume: %s&#39; % (
-        resp.content)</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_volume_using_terraform"><code class="name flex">
-<span>def <span class="ident">test_create_volume_using_terraform</span></span>(<span>admin_session, volume_using_terraform)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Test creates Terraform Harvester</p>
-<h2 id="covers">Covers</h2>
-<p>terraform-provider-07-Harvester volume
-terraform-provider-10-All resource terraform plan,apply,
-terraform destroy
-terraform-provider-01-install, terraform-provider-02-kube config,
-terraform-provider-03-define
-kube config</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@pytest.mark.terraform_provider_p1
-@pytest.mark.p1
-@pytest.mark.terraform
-def test_create_volume_using_terraform(admin_session, volume_using_terraform):
-    &#34;&#34;&#34;
-    Test creates Terraform Harvester
-    Covers:
-        terraform-provider-07-Harvester volume
-        terraform-provider-10-All resource terraform plan,apply,
-        terraform destroy
-        terraform-provider-01-install, terraform-provider-02-kube config,
-        terraform-provider-03-define
-        kube config
-    &#34;&#34;&#34;
-    # NOTE: the volume_using_terraform fixture will be creating the
-    # volume and check the result
-    pass</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_volume_with_image_label"><code class="name flex">
-<span>def <span class="ident">test_create_volume_with_image_label</span></span>(<span>volume_with_image)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Volume test with image</p>
-<h2 id="covers">Covers</h2>
-<p>vol-10-Create volume root disk VM Image Form with label</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@pytest.mark.volumes_p2
-@pytest.mark.p2
-def test_create_volume_with_image_label(volume_with_image):
-    # NOTE: if the volume is successfully create that means the test is good
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-10-Create volume root disk VM Image Form with label
-    &#34;&#34;&#34;
-    pass</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_volume_with_label"><code class="name flex">
-<span>def <span class="ident">test_create_volume_with_label</span></span>(<span>request, admin_session, harvester_api_endpoints)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Volume test with image</p>
-<h2 id="covers">Covers</h2>
-<p>vol-09-Create Volume root disk blank Form with label</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@pytest.mark.volumes_p2
-@pytest.mark.p2
-def test_create_volume_with_label(request, admin_session,
-                                  harvester_api_endpoints):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-09-Create Volume root disk blank Form with label
-    &#34;&#34;&#34;
-    request_json = utils.get_json_object_from_template(&#39;basic_volume&#39;)
-    request_json[&#39;metadata&#39;][&#39;labels&#39;] = {
-        &#39;test.harvesterhci.io&#39;: &#39;for-test&#39;
-    }
-    resp = admin_session.post(harvester_api_endpoints.create_volume,
-                              json=request_json)
-    assert resp.status_code == 201, (
-        &#39;Failed to create volume with labels: %s&#39; % (resp.content))
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;])
-    pvc_json = validate_blank_volumes(request, admin_session, view_endpoint)
-    assert pvc_json[&#39;metadata&#39;][&#39;labels&#39;].get(
-        &#39;test.harvesterhci.io&#39;) == &#39;for-test&#39;
-    resp = admin_session.delete(harvester_api_endpoints.delete_volume % (
-        request_json[&#39;metadata&#39;][&#39;name&#39;]))
-    # FIXME(gyee): we need to figure out why the API can arbitarily return
-    # 200 or 204. It should consistently returning one.
-    assert resp.status_code in [200, 204], &#39;Failed to delete volume: %s&#39; % (
-        resp.content)</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_create_volumes"><code class="name flex">
-<span>def <span class="ident">test_create_volumes</span></span>(<span>volume)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Volume test with image</p>
-<h2 id="covers">Covers</h2>
-<p>vol-02-Create Volume root disk blank YAML
-vol-14-Delete volume that is not attached to a VM</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@pytest.mark.volumes_p1
-@pytest.mark.p1
-def test_create_volumes(volume):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-02-Create Volume root disk blank YAML
-        vol-14-Delete volume that is not attached to a VM
-    &#34;&#34;&#34;
-    # NOTE: if the volume is successfully create that means the test is good
-    pass</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_update_volume_json"><code class="name flex">
-<span>def <span class="ident">test_update_volume_json</span></span>(<span>request, admin_session, harvester_api_endpoints, volume)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Volume test with image</p>
-<h2 id="covers">Covers</h2>
-<p>vol-05-Edit volume increase size via json</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@pytest.mark.volumes_p2
-@pytest.mark.p2
-def test_update_volume_json(request, admin_session,
-                            harvester_api_endpoints, volume):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-05-Edit volume increase size via json
-    &#34;&#34;&#34;
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        volume[&#39;metadata&#39;][&#39;name&#39;])
-    pvc_json = validate_blank_volumes(request, admin_session, view_endpoint)
-    # now try to increase the size
-    pvc_json[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;][&#39;storage&#39;] = &#39;21Gi&#39;
-    resp = utils.poll_for_update_resource(
-        request, admin_session,
-        harvester_api_endpoints.update_volume % (
-            volume[&#39;metadata&#39;][&#39;name&#39;]),
-        pvc_json,
-        harvester_api_endpoints.get_volume % (
-            volume[&#39;metadata&#39;][&#39;name&#39;]))
-    validate_blank_volumes(request, admin_session, view_endpoint)
-    updated_vol_data = resp.json()
-    assert updated_vol_data[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;].get(
-        &#39;storage&#39;) == &#39;21Gi&#39;</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.test_update_volume_yaml"><code class="name flex">
-<span>def <span class="ident">test_update_volume_yaml</span></span>(<span>request, admin_session, harvester_api_endpoints, volume)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Volume test with image</p>
-<h2 id="covers">Covers</h2>
-<p>vol-05-Edit volume increase size via YAML</p></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@pytest.mark.volumes_p2
-@pytest.mark.p2
-def test_update_volume_yaml(request, admin_session,
-                            harvester_api_endpoints, volume):
-    &#34;&#34;&#34;
-    Volume test with image
-    Covers:
-        vol-05-Edit volume increase size via YAML
-    &#34;&#34;&#34;
-    view_endpoint = harvester_api_endpoints.get_volume % (
-        volume[&#39;metadata&#39;][&#39;name&#39;])
-    pvc_json = validate_blank_volumes(request, admin_session, view_endpoint)
-    # now try to increase the size
-    pvc_json[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;][&#39;storage&#39;] = &#39;22Gi&#39;
-    resp = utils.poll_for_update_resource(
-        request, admin_session,
-        harvester_api_endpoints.update_volume % (
-            volume[&#39;metadata&#39;][&#39;name&#39;]),
-        pvc_json,
-        harvester_api_endpoints.get_volume % (
-            volume[&#39;metadata&#39;][&#39;name&#39;]),
-        use_yaml=True)
-    validate_blank_volumes(request, admin_session, view_endpoint)
-    updated_vol_data = resp.json()
-    assert updated_vol_data[&#39;spec&#39;][&#39;resources&#39;][&#39;requests&#39;].get(
-        &#39;storage&#39;) == &#39;22Gi&#39;</code></pre>
-</details>
-</dd>
-<dt id="harvester_e2e_tests.apis.test_volumes.validate_blank_volumes"><code class="name flex">
-<span>def <span class="ident">validate_blank_volumes</span></span>(<span>request, admin_session, get_api_link)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def validate_blank_volumes(request, admin_session, get_api_link):
-    pvc_json = None
+<pre><code class="python">@pytest.mark.p0
+@pytest.mark.smoke
+@pytest.mark.volumes
+class TestVolumes:
+    def test_create(self, api_client, unique_name):
+        &#34;&#34;&#34;
+        1. Create a new image from the default entries in the spec
+        2. Check that the create command gets a 201 response
+        &#34;&#34;&#34;
+        spec = api_client.volumes.Spec(1)
+        code, data = api_client.volumes.create(unique_name, spec)
 
-    def _wait_for_volume_ready():
-        nonlocal pvc_json
-        resp = admin_session.get(get_api_link)
-        if resp.status_code == 200:
-            pvc_json = resp.json()
-            if &#39;status&#39; in pvc_json and pvc_json[&#39;status&#39;][&#39;phase&#39;] == &#39;Bound&#39;:
-                return True
-        return False
+        assert 201 == code, (code, data)
 
-    success = polling2.poll(
-        _wait_for_volume_ready,
-        step=5,
-        timeout=request.config.getoption(&#39;--wait-timeout&#39;))
-    assert success, &#39;Timed out while waiting for volume to be ready.&#39;
-    return pvc_json</code></pre>
+    def test_get(self, api_client, unique_name):
+        &#34;&#34;&#34;
+        1. Runs a get command on the volume created in the previous test
+        note: this will fail if you run it by itself
+        2. It will fail if it doesn&#39;t return a 200
+        &#34;&#34;&#34;
+        # Case 1: get all volumes
+        code, data = api_client.volumes.get()
+
+        assert 200 == code, (code, data)
+        assert len(data[&#39;data&#39;]) &gt; 0, (code, data)
+
+        # Case 2: get specific volume
+        code, data = api_client.volumes.get(unique_name)
+
+        assert 200 == code, (code, data)
+        assert unique_name == data[&#39;metadata&#39;][&#39;name&#39;], (code, data)
+
+    def test_update_size(self, api_client, unique_name, wait_timeout):
+        &#34;&#34;&#34;
+        1. Updates the volume created in the previous test to 10GB
+        note: this will fail if you run it by itself
+        2. It will loop while waiting for it to update and error out if it doesn&#39;t
+        &#34;&#34;&#34;
+        # Pre-condition: Volume is Ready
+        endtime = datetime.now() + timedelta(seconds=wait_timeout)
+        while endtime &gt; datetime.now():
+            code, data = api_client.volumes.get(unique_name)
+            if &#34;Bound&#34; == data[&#39;status&#39;][&#39;phase&#39;]:
+                break
+            sleep(5)
+        else:
+            raise AssertionError(
+                &#34;Volume not changed to phase: _Bound_ with {wait_timeout} timed out\n&#34;
+                f&#34;Got error: {code}, {data}&#34;
+            )
+
+        spec = api_client.volumes.Spec.from_dict(data)
+        spec.size = &#34;10Gi&#34;
+        code, data = api_client.volumes.update(unique_name, spec)
+
+        assert 200 == code, (f&#34;Failed to update volume with error: {code}, {data}&#34;)
+
+    def test_delete(self, api_client, unique_name, wait_timeout):
+        &#34;&#34;&#34;
+        1. Deletes the volume created in the previous test
+        note: this will fail if you run it by itself
+        2. It will loop while waiting for it to delete and error out if it doesn&#39;t
+        &#34;&#34;&#34;
+        code, data = api_client.volumes.delete(unique_name)
+
+        assert 200 == code, (f&#34;Failed to delete volume with error: {code}, {data}&#34;)
+
+        endtime = datetime.now() + timedelta(seconds=wait_timeout)
+        while endtime &gt; datetime.now():
+            code, data = api_client.volumes.get(unique_name)
+            if code == 404:
+                break
+            sleep(5)
+        else:
+            raise AssertionError(
+                f&#34;Failed to delete volume {unique_name} with {wait_timeout} timed out\n&#34;
+                f&#34;Still got {code} with {data}&#34;
+            )</code></pre>
 </details>
+<div class="desc"></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumes.pytestmark"><code class="name">var <span class="ident">pytestmark</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumes.test_create"><code class="name flex">
+<span>def <span class="ident">test_create</span></span>(<span>self, api_client, unique_name)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_create(self, api_client, unique_name):
+    &#34;&#34;&#34;
+    1. Create a new image from the default entries in the spec
+    2. Check that the create command gets a 201 response
+    &#34;&#34;&#34;
+    spec = api_client.volumes.Spec(1)
+    code, data = api_client.volumes.create(unique_name, spec)
+
+    assert 201 == code, (code, data)</code></pre>
+</details>
+<div class="desc"><ol>
+<li>Create a new image from the default entries in the spec</li>
+<li>Check that the create command gets a 201 response</li>
+</ol></div>
+</dd>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumes.test_delete"><code class="name flex">
+<span>def <span class="ident">test_delete</span></span>(<span>self, api_client, unique_name, wait_timeout)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_delete(self, api_client, unique_name, wait_timeout):
+    &#34;&#34;&#34;
+    1. Deletes the volume created in the previous test
+    note: this will fail if you run it by itself
+    2. It will loop while waiting for it to delete and error out if it doesn&#39;t
+    &#34;&#34;&#34;
+    code, data = api_client.volumes.delete(unique_name)
+
+    assert 200 == code, (f&#34;Failed to delete volume with error: {code}, {data}&#34;)
+
+    endtime = datetime.now() + timedelta(seconds=wait_timeout)
+    while endtime &gt; datetime.now():
+        code, data = api_client.volumes.get(unique_name)
+        if code == 404:
+            break
+        sleep(5)
+    else:
+        raise AssertionError(
+            f&#34;Failed to delete volume {unique_name} with {wait_timeout} timed out\n&#34;
+            f&#34;Still got {code} with {data}&#34;
+        )</code></pre>
+</details>
+<div class="desc"><ol>
+<li>Deletes the volume created in the previous test
+note: this will fail if you run it by itself</li>
+<li>It will loop while waiting for it to delete and error out if it doesn't</li>
+</ol></div>
+</dd>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumes.test_get"><code class="name flex">
+<span>def <span class="ident">test_get</span></span>(<span>self, api_client, unique_name)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_get(self, api_client, unique_name):
+    &#34;&#34;&#34;
+    1. Runs a get command on the volume created in the previous test
+    note: this will fail if you run it by itself
+    2. It will fail if it doesn&#39;t return a 200
+    &#34;&#34;&#34;
+    # Case 1: get all volumes
+    code, data = api_client.volumes.get()
+
+    assert 200 == code, (code, data)
+    assert len(data[&#39;data&#39;]) &gt; 0, (code, data)
+
+    # Case 2: get specific volume
+    code, data = api_client.volumes.get(unique_name)
+
+    assert 200 == code, (code, data)
+    assert unique_name == data[&#39;metadata&#39;][&#39;name&#39;], (code, data)</code></pre>
+</details>
+<div class="desc"><ol>
+<li>Runs a get command on the volume created in the previous test
+note: this will fail if you run it by itself</li>
+<li>It will fail if it doesn't return a 200</li>
+</ol></div>
+</dd>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumes.test_update_size"><code class="name flex">
+<span>def <span class="ident">test_update_size</span></span>(<span>self, api_client, unique_name, wait_timeout)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_update_size(self, api_client, unique_name, wait_timeout):
+    &#34;&#34;&#34;
+    1. Updates the volume created in the previous test to 10GB
+    note: this will fail if you run it by itself
+    2. It will loop while waiting for it to update and error out if it doesn&#39;t
+    &#34;&#34;&#34;
+    # Pre-condition: Volume is Ready
+    endtime = datetime.now() + timedelta(seconds=wait_timeout)
+    while endtime &gt; datetime.now():
+        code, data = api_client.volumes.get(unique_name)
+        if &#34;Bound&#34; == data[&#39;status&#39;][&#39;phase&#39;]:
+            break
+        sleep(5)
+    else:
+        raise AssertionError(
+            &#34;Volume not changed to phase: _Bound_ with {wait_timeout} timed out\n&#34;
+            f&#34;Got error: {code}, {data}&#34;
+        )
+
+    spec = api_client.volumes.Spec.from_dict(data)
+    spec.size = &#34;10Gi&#34;
+    code, data = api_client.volumes.update(unique_name, spec)
+
+    assert 200 == code, (f&#34;Failed to update volume with error: {code}, {data}&#34;)</code></pre>
+</details>
+<div class="desc"><ol>
+<li>Updates the volume created in the previous test to 10GB
+note: this will fail if you run it by itself</li>
+<li>It will loop while waiting for it to update and error out if it doesn't</li>
+</ol></div>
+</dd>
+</dl>
+</dd>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative"><code class="flex name class">
+<span>class <span class="ident">TestVolumesNegative</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.p0
+@pytest.mark.sanity
+@pytest.mark.negative
+@pytest.mark.volumes
+class TestVolumesNegative:
+    def test_get_not_exist(self, api_client, unique_name):
+        &#34;&#34;&#34;
+        1. Tries to get a volume that doesn&#39;t exist
+        2. Checks that the get command gets a 404
+        &#34;&#34;&#34;
+        code, data = api_client.volumes.get(unique_name)
+
+        assert 404 == code, (code, data)
+        assert &#34;NotFound&#34; == data.get(&#39;code&#39;), (code, data)
+
+    def test_delete_not_exist(self, api_client, unique_name):
+        &#34;&#34;&#34;
+        1. Tries to delete a volume that doesn&#39;t exist
+        2. Checks that it gets a 404
+        &#34;&#34;&#34;
+        code, data = api_client.volumes.delete(unique_name)
+
+        assert 404 == code, (code, data)
+        assert &#34;NotFound&#34; == data.get(&#34;code&#34;), (code, data)
+
+    def test_create_without_size(self, api_client, unique_name):
+        &#34;&#34;&#34;
+        1. Tries to create a volume without a size
+        2. Checks that it gets a 422
+        &#34;&#34;&#34;
+        spec = api_client.volumes.Spec(0)
+        code, data = api_client.volumes.create(unique_name, spec)
+
+        assert 422 == code, (code, data)
+        assert &#34;Invalid&#34; == data.get(&#34;code&#34;), (code, data)
+
+    @pytest.mark.skip_version_if(&#34;&gt;= v1.4.0&#34;, reason=&#34;issue#7030, breaking changes&#34;)
+    def test_create_without_name(self, api_client):
+        &#34;&#34;&#34;
+        1. Tries to create a volume without a name
+        2. Checks that it gets a  422
+        &#34;&#34;&#34;
+        spec = api_client.volumes.Spec(1)
+        code, data = api_client.volumes.create(&#34;&#34;, spec)
+
+        assert 422 == code, (code, data)
+        assert &#34;Invalid&#34; == data.get(&#34;code&#34;), (code, data)</code></pre>
+</details>
+<div class="desc"></div>
+<h3>Class variables</h3>
+<dl>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.pytestmark"><code class="name">var <span class="ident">pytestmark</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_create_without_name"><code class="name flex">
+<span>def <span class="ident">test_create_without_name</span></span>(<span>self, api_client)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.skip_version_if(&#34;&gt;= v1.4.0&#34;, reason=&#34;issue#7030, breaking changes&#34;)
+def test_create_without_name(self, api_client):
+    &#34;&#34;&#34;
+    1. Tries to create a volume without a name
+    2. Checks that it gets a  422
+    &#34;&#34;&#34;
+    spec = api_client.volumes.Spec(1)
+    code, data = api_client.volumes.create(&#34;&#34;, spec)
+
+    assert 422 == code, (code, data)
+    assert &#34;Invalid&#34; == data.get(&#34;code&#34;), (code, data)</code></pre>
+</details>
+<div class="desc"><ol>
+<li>Tries to create a volume without a name</li>
+<li>Checks that it gets a
+422</li>
+</ol></div>
+</dd>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_create_without_size"><code class="name flex">
+<span>def <span class="ident">test_create_without_size</span></span>(<span>self, api_client, unique_name)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_create_without_size(self, api_client, unique_name):
+    &#34;&#34;&#34;
+    1. Tries to create a volume without a size
+    2. Checks that it gets a 422
+    &#34;&#34;&#34;
+    spec = api_client.volumes.Spec(0)
+    code, data = api_client.volumes.create(unique_name, spec)
+
+    assert 422 == code, (code, data)
+    assert &#34;Invalid&#34; == data.get(&#34;code&#34;), (code, data)</code></pre>
+</details>
+<div class="desc"><ol>
+<li>Tries to create a volume without a size</li>
+<li>Checks that it gets a 422</li>
+</ol></div>
+</dd>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_delete_not_exist"><code class="name flex">
+<span>def <span class="ident">test_delete_not_exist</span></span>(<span>self, api_client, unique_name)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_delete_not_exist(self, api_client, unique_name):
+    &#34;&#34;&#34;
+    1. Tries to delete a volume that doesn&#39;t exist
+    2. Checks that it gets a 404
+    &#34;&#34;&#34;
+    code, data = api_client.volumes.delete(unique_name)
+
+    assert 404 == code, (code, data)
+    assert &#34;NotFound&#34; == data.get(&#34;code&#34;), (code, data)</code></pre>
+</details>
+<div class="desc"><ol>
+<li>Tries to delete a volume that doesn't exist</li>
+<li>Checks that it gets a 404</li>
+</ol></div>
+</dd>
+<dt id="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_get_not_exist"><code class="name flex">
+<span>def <span class="ident">test_get_not_exist</span></span>(<span>self, api_client, unique_name)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_get_not_exist(self, api_client, unique_name):
+    &#34;&#34;&#34;
+    1. Tries to get a volume that doesn&#39;t exist
+    2. Checks that the get command gets a 404
+    &#34;&#34;&#34;
+    code, data = api_client.volumes.get(unique_name)
+
+    assert 404 == code, (code, data)
+    assert &#34;NotFound&#34; == data.get(&#39;code&#39;), (code, data)</code></pre>
+</details>
+<div class="desc"><ol>
+<li>Tries to get a volume that doesn't exist</li>
+<li>Checks that the get command gets a 404</li>
+</ol></div>
+</dd>
+</dl>
 </dd>
 </dl>
 </section>
-<section>
-</section>
 </article>
 <nav id="sidebar">
-<h1>Index</h1>
 <div class="toc">
 <ul></ul>
 </div>
@@ -717,28 +452,35 @@ def test_update_volume_yaml(request, admin_session,
 <li><code><a title="harvester_e2e_tests.apis" href="index.html">harvester_e2e_tests.apis</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-functions">Functions</a></h3>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumes" href="#harvester_e2e_tests.apis.test_volumes.TestVolumes">TestVolumes</a></code></h4>
 <ul class="">
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_vol_with_image_terraform" href="#harvester_e2e_tests.apis.test_volumes.test_create_vol_with_image_terraform">test_create_vol_with_image_terraform</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_volume_by_yaml" href="#harvester_e2e_tests.apis.test_volumes.test_create_volume_by_yaml">test_create_volume_by_yaml</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_volume_image_form" href="#harvester_e2e_tests.apis.test_volumes.test_create_volume_image_form">test_create_volume_image_form</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_volume_missing_name" href="#harvester_e2e_tests.apis.test_volumes.test_create_volume_missing_name">test_create_volume_missing_name</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_volume_missing_size" href="#harvester_e2e_tests.apis.test_volumes.test_create_volume_missing_size">test_create_volume_missing_size</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_volume_using_image_by_yaml" href="#harvester_e2e_tests.apis.test_volumes.test_create_volume_using_image_by_yaml">test_create_volume_using_image_by_yaml</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_volume_using_terraform" href="#harvester_e2e_tests.apis.test_volumes.test_create_volume_using_terraform">test_create_volume_using_terraform</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_volume_with_image_label" href="#harvester_e2e_tests.apis.test_volumes.test_create_volume_with_image_label">test_create_volume_with_image_label</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_volume_with_label" href="#harvester_e2e_tests.apis.test_volumes.test_create_volume_with_label">test_create_volume_with_label</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_create_volumes" href="#harvester_e2e_tests.apis.test_volumes.test_create_volumes">test_create_volumes</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_update_volume_json" href="#harvester_e2e_tests.apis.test_volumes.test_update_volume_json">test_update_volume_json</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.test_update_volume_yaml" href="#harvester_e2e_tests.apis.test_volumes.test_update_volume_yaml">test_update_volume_yaml</a></code></li>
-<li><code><a title="harvester_e2e_tests.apis.test_volumes.validate_blank_volumes" href="#harvester_e2e_tests.apis.test_volumes.validate_blank_volumes">validate_blank_volumes</a></code></li>
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumes.pytestmark" href="#harvester_e2e_tests.apis.test_volumes.TestVolumes.pytestmark">pytestmark</a></code></li>
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumes.test_create" href="#harvester_e2e_tests.apis.test_volumes.TestVolumes.test_create">test_create</a></code></li>
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumes.test_delete" href="#harvester_e2e_tests.apis.test_volumes.TestVolumes.test_delete">test_delete</a></code></li>
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumes.test_get" href="#harvester_e2e_tests.apis.test_volumes.TestVolumes.test_get">test_get</a></code></li>
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumes.test_update_size" href="#harvester_e2e_tests.apis.test_volumes.TestVolumes.test_update_size">test_update_size</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative" href="#harvester_e2e_tests.apis.test_volumes.TestVolumesNegative">TestVolumesNegative</a></code></h4>
+<ul class="">
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.pytestmark" href="#harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.pytestmark">pytestmark</a></code></li>
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_create_without_name" href="#harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_create_without_name">test_create_without_name</a></code></li>
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_create_without_size" href="#harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_create_without_size">test_create_without_size</a></code></li>
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_delete_not_exist" href="#harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_delete_not_exist">test_delete_not_exist</a></code></li>
+<li><code><a title="harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_get_not_exist" href="#harvester_e2e_tests.apis.test_volumes.TestVolumesNegative.test_get_not_exist">test_get_not_exist</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
 </footer>
 </body>
 </html>
