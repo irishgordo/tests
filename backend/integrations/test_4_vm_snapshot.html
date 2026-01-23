@@ -555,8 +555,7 @@ class TestVMSnapshot:
 
         reason = data.get(&#34;message&#34;)
 
-        wantmsg = &#34;Delete policy with backup type snapshot&#34;
-        &#34; for replacing VM is not supported&#34;
+        wantmsg = &#34;policy with backup type snapshot for replacing VM is not supported&#34;
 
         assert wantmsg in reason
         assert 422 == code
@@ -681,7 +680,8 @@ class TestVMSnapshot:
         assert data.get(&#34;status&#34;, {}).get(&#34;readyToUse&#34;) is True
 
     @pytest.mark.sanity
-    @pytest.mark.dependency(name=&#34;cleaned_up_after_vm_delete&#34;)
+    @pytest.mark.dependency(name=&#34;cleaned_up_after_vm_delete&#34;,
+                            depends=[&#34;source_vm_snapshot&#34;])
     def test_vm_snapshots_are_cleaned_up_after_source_vm_deleted(self, api_client,
                                                                  source_vm, vm_snapshot_name,
                                                                  wait_timeout):
@@ -862,8 +862,7 @@ def test_replace_is_rejected_when_deletepolicy_is_retain(self, api_client,
 
     reason = data.get(&#34;message&#34;)
 
-    wantmsg = &#34;Delete policy with backup type snapshot&#34;
-    &#34; for replacing VM is not supported&#34;
+    wantmsg = &#34;policy with backup type snapshot for replacing VM is not supported&#34;
 
     assert wantmsg in reason
     assert 422 == code</code></pre>
@@ -1093,7 +1092,8 @@ A virtual machine has been created and is running.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.sanity
-@pytest.mark.dependency(name=&#34;cleaned_up_after_vm_delete&#34;)
+@pytest.mark.dependency(name=&#34;cleaned_up_after_vm_delete&#34;,
+                        depends=[&#34;source_vm_snapshot&#34;])
 def test_vm_snapshots_are_cleaned_up_after_source_vm_deleted(self, api_client,
                                                              source_vm, vm_snapshot_name,
                                                              wait_timeout):

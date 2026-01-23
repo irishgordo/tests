@@ -293,9 +293,18 @@ Expected Result:<ul>
 @pytest.mark.sanity
 @pytest.mark.virtualmachines
 @pytest.mark.negative
-@pytest.mark.parametrize(&#34;resource&#34;, [dict(cpu=MAX), dict(mem=MAX), dict(disk=MAX),
-                                      dict(mem=MAX, cpu=MAX), dict(mem=MAX, cpu=MAX, disk=MAX)],
-                         ids=[&#39;cpu&#39;, &#39;mem&#39;, &#39;disk&#39;, &#39;mem-and-cpu&#39;, &#39;mem-cpu-and-disk&#39;])
+@pytest.mark.parametrize(&#34;resource&#34;, [
+    dict(cpu=MAX),
+    dict(mem=MAX),
+    pytest.param(
+        dict(disk=MAX),
+        marks=pytest.mark.xfail_if_version(
+            &#34;&gt;= v1.7.0&#34;, reason=&#34;https://github.com/harvester/harvester/issues/9850 since v1.7.0&#34;
+        )
+    ),
+    dict(mem=MAX, cpu=MAX),
+    dict(mem=MAX, cpu=MAX, disk=MAX)],
+    ids=[&#39;cpu&#39;, &#39;mem&#39;, &#39;disk&#39;, &#39;mem-and-cpu&#39;, &#39;mem-cpu-and-disk&#39;])
 def test_create_vm_no_available_resources(resource, api_client, image,
                                           wait_timeout, unique_vm_name, sleep_timeout):
     &#34;&#34;&#34;Creates a VM with outlandish resources for varying elements (purposefully negative test)
@@ -517,12 +526,10 @@ Expected Result:<ul>
 <pre><code class="python">@pytest.mark.p0
 @pytest.mark.sanity
 @pytest.mark.virtualmachines
-@pytest.mark.skip_version_if(
-    &#34;&gt; v1.3.0&#34;, reason=&#34;`pc type removed, ref: https://github.com/harvester/harvester/issues/5437&#34;
-)
+@pytest.mark.skip_if_version(
+    &#34;&gt; v1.3.0&#34;, reason=&#34;`pc type removed, ref: https://github.com/harvester/harvester/issues/5437&#34;)
 @pytest.mark.parametrize(
-    &#34;machine_types&#34;, [(&#34;q35&#34;, &#34;pc&#34;), (&#34;pc&#34;, &#34;q35&#34;)], ids=[&#39;q35_to_pc&#39;, &#39;pc_to_q35&#39;]
-)
+    &#34;machine_types&#34;, [(&#34;q35&#34;, &#34;pc&#34;), (&#34;pc&#34;, &#34;q35&#34;)], ids=[&#39;q35_to_pc&#39;, &#39;pc_to_q35&#39;])
 def test_update_vm_machine_type(
     api_client, image, unique_vm_name, wait_timeout, machine_types, sleep_timeout
 ):
@@ -903,7 +910,7 @@ def unset_cpu_memory_overcommit(api_client):
 
     yield json.loads(data[&#39;value&#39;]), origin_val
 
-    spec.val = origin_val
+    spec.value = origin_val
     api_client.settings.update(&#39;overcommit-config&#39;, spec)</code></pre>
 </details>
 <div class="desc"></div>
@@ -923,7 +930,6 @@ def unset_cpu_memory_overcommit(api_client):
 </summary>
 <pre><code class="python">@pytest.mark.p0
 @pytest.mark.smoke
-@pytest.mark.wait_volumes_detached
 @pytest.mark.virtualmachines
 class TestHotPlugVolume:
     &#34;&#34;&#34;
@@ -2245,8 +2251,11 @@ class TestVMOperations:
             f&#34;{data}&#34;
         )
 
-        new_host = next(h[&#39;id&#39;] for h in host_data[&#39;data&#39;]
-                        if cur_host != h[&#39;id&#39;] and not h[&#39;spec&#39;].get(&#39;taint&#39;))
+        try:
+            new_host = next(h[&#39;id&#39;] for h in host_data[&#39;data&#39;]
+                            if cur_host != h[&#39;id&#39;] and not h[&#39;spec&#39;].get(&#39;taint&#39;))
+        except StopIteration:
+            pytest.skip(&#34;Require 2+ nodes for migration testing.&#34;)
 
         code, data = api_client.vms.migrate(unique_vm_name, new_host)
         assert 204 == code, (code, data)
@@ -2284,8 +2293,11 @@ class TestVMOperations:
             f&#34;{data}&#34;
         )
 
-        new_host = next(h[&#39;id&#39;] for h in host_data[&#39;data&#39;]
-                        if cur_host != h[&#39;id&#39;] and not h[&#39;spec&#39;].get(&#39;taint&#39;))
+        try:
+            new_host = next(h[&#39;id&#39;] for h in host_data[&#39;data&#39;]
+                            if cur_host != h[&#39;id&#39;] and not h[&#39;spec&#39;].get(&#39;taint&#39;))
+        except StopIteration:
+            pytest.skip(&#34;Require 2+ nodes for migration testing.&#34;)
 
         code, data = api_client.vms.migrate(unique_vm_name, new_host)
         assert 204 == code, (code, data)
@@ -2411,8 +2423,11 @@ class TestVMOperations:
         f&#34;{data}&#34;
     )
 
-    new_host = next(h[&#39;id&#39;] for h in host_data[&#39;data&#39;]
-                    if cur_host != h[&#39;id&#39;] and not h[&#39;spec&#39;].get(&#39;taint&#39;))
+    try:
+        new_host = next(h[&#39;id&#39;] for h in host_data[&#39;data&#39;]
+                        if cur_host != h[&#39;id&#39;] and not h[&#39;spec&#39;].get(&#39;taint&#39;))
+    except StopIteration:
+        pytest.skip(&#34;Require 2+ nodes for migration testing.&#34;)
 
     code, data = api_client.vms.migrate(unique_vm_name, new_host)
     assert 204 == code, (code, data)
@@ -2557,8 +2572,11 @@ Expected Result:<ul>
         f&#34;{data}&#34;
     )
 
-    new_host = next(h[&#39;id&#39;] for h in host_data[&#39;data&#39;]
-                    if cur_host != h[&#39;id&#39;] and not h[&#39;spec&#39;].get(&#39;taint&#39;))
+    try:
+        new_host = next(h[&#39;id&#39;] for h in host_data[&#39;data&#39;]
+                        if cur_host != h[&#39;id&#39;] and not h[&#39;spec&#39;].get(&#39;taint&#39;))
+    except StopIteration:
+        pytest.skip(&#34;Require 2+ nodes for migration testing.&#34;)
 
     code, data = api_client.vms.migrate(unique_vm_name, new_host)
     assert 204 == code, (code, data)
@@ -2993,8 +3011,9 @@ class TestVMResource:
         unique_vm_name, ssh_user = stopped_vm
 
         # make sure VM stopped and configure as minimal resource
-        vm_stopped, (code, data) = vm_checker.wait_stopped(unique_vm_name)
+        vm_stopped, (code, data) = vm_checker.wait_status_stopped(unique_vm_name)
         assert vm_stopped, (code, data)
+        sleep(1)  # to avoid code 409 conflict: &#39;object has been modified&#39;
         code, data = api_client.vms.get(unique_vm_name)
         vm_spec = api_client.vms.Spec.from_dict(data)
         vm_spec.cpu_cores, vm_spec.memory = 1, 2
@@ -3516,8 +3535,9 @@ def test_update_schedule_on_maximum(
     unique_vm_name, ssh_user = stopped_vm
 
     # make sure VM stopped and configure as minimal resource
-    vm_stopped, (code, data) = vm_checker.wait_stopped(unique_vm_name)
+    vm_stopped, (code, data) = vm_checker.wait_status_stopped(unique_vm_name)
     assert vm_stopped, (code, data)
+    sleep(1)  # to avoid code 409 conflict: &#39;object has been modified&#39;
     code, data = api_client.vms.get(unique_vm_name)
     vm_spec = api_client.vms.Spec.from_dict(data)
     vm_spec.cpu_cores, vm_spec.memory = 1, 2

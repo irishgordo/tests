@@ -1056,6 +1056,28 @@ class TestAnyNodesUpgrade:
           of kubevirt and longhorn
         &#34;&#34;&#34;
 
+        def check_image_version(old, new):
+            def sanitized_ver(img: str):
+                try:
+                    # PEP 440 compliant: N(.N)*[-+]?[{a|alpha|b|beta|c|rc}N][.postN][.devN]
+                    ver_str = img.split(&#39;:&#39;, 1)[-1]
+                    ver_obj = parse_version(ver_str)
+                    return ver_obj
+                except InvalidVersion as e:
+                    if &#34;-&#34; in ver_str:
+                        # Conform to PEP 440 by replacing the first &#39;-&#39; with &#39;+&#39;
+                        # e.g. 1.2.3-4.5.6 -&gt; 1.2.3+4.5.6, v1.10.1-hotfix-2 -&gt; v1.10.1+hotfix
+                        ver_obj = parse_version(&#34;+&#34;.join(ver_str.split(&#34;-&#34;)[:2]))
+                        logger.warning(f&#34;Convert {img} to {ver_obj} for comparison&#34;)
+                        return ver_obj
+                    raise e
+
+            old_le_new = (sanitized_ver(old) &lt;= sanitized_ver(new))
+            if not old_le_new:
+                logger.error(f&#34;Old image {old} does not less or equal to the new {new}&#34;)
+
+            return old_le_new
+
         kubevirt_version_existed = False
         engine_image_version_existed = False
         longhorn_manager_version_existed = False
@@ -1088,8 +1110,9 @@ class TestAnyNodesUpgrade:
 
         for pod in pods[&#39;data&#39;]:
             if &#34;virt-operator&#34; in pod[&#39;metadata&#39;][&#39;name&#39;]:
-                kubevirt_version_existed = (
-                    kubevirt_operator_image == pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;])
+                kubevirt_version_existed = check_image_version(
+                    kubevirt_operator_image, pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;]
+                )
 
         # Verify longhorn version
         code, pods = api_client.get_pods(namespace=DEFAULT_LONGHORN_NAMESPACE)
@@ -1098,11 +1121,13 @@ class TestAnyNodesUpgrade:
 
         for pod in pods[&#39;data&#39;]:
             if &#34;longhorn-manager&#34; in pod[&#39;metadata&#39;][&#39;name&#39;]:
-                longhorn_manager_version_existed = (
-                  longhorn_images[&#34;longhorn-manager&#34;] == pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;])
+                longhorn_manager_version_existed = check_image_version(
+                  longhorn_images[&#34;longhorn-manager&#34;], pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;]
+                )
             elif &#34;engine-image&#34; in pod[&#39;metadata&#39;][&#39;name&#39;]:
-                engine_image_version_existed = (
-                    longhorn_images[&#34;engine-image&#34;] == pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;])
+                engine_image_version_existed = check_image_version(
+                    longhorn_images[&#34;engine-image&#34;], pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;]
+                )
 
         assert kubevirt_version_existed, &#34;kubevirt version is not correct&#34;
         assert engine_image_version_existed, &#34;longhorn engine image version is not correct&#34;
@@ -1638,6 +1663,28 @@ def test_verify_deployed_components_version(self, api_client):
       of kubevirt and longhorn
     &#34;&#34;&#34;
 
+    def check_image_version(old, new):
+        def sanitized_ver(img: str):
+            try:
+                # PEP 440 compliant: N(.N)*[-+]?[{a|alpha|b|beta|c|rc}N][.postN][.devN]
+                ver_str = img.split(&#39;:&#39;, 1)[-1]
+                ver_obj = parse_version(ver_str)
+                return ver_obj
+            except InvalidVersion as e:
+                if &#34;-&#34; in ver_str:
+                    # Conform to PEP 440 by replacing the first &#39;-&#39; with &#39;+&#39;
+                    # e.g. 1.2.3-4.5.6 -&gt; 1.2.3+4.5.6, v1.10.1-hotfix-2 -&gt; v1.10.1+hotfix
+                    ver_obj = parse_version(&#34;+&#34;.join(ver_str.split(&#34;-&#34;)[:2]))
+                    logger.warning(f&#34;Convert {img} to {ver_obj} for comparison&#34;)
+                    return ver_obj
+                raise e
+
+        old_le_new = (sanitized_ver(old) &lt;= sanitized_ver(new))
+        if not old_le_new:
+            logger.error(f&#34;Old image {old} does not less or equal to the new {new}&#34;)
+
+        return old_le_new
+
     kubevirt_version_existed = False
     engine_image_version_existed = False
     longhorn_manager_version_existed = False
@@ -1670,8 +1717,9 @@ def test_verify_deployed_components_version(self, api_client):
 
     for pod in pods[&#39;data&#39;]:
         if &#34;virt-operator&#34; in pod[&#39;metadata&#39;][&#39;name&#39;]:
-            kubevirt_version_existed = (
-                kubevirt_operator_image == pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;])
+            kubevirt_version_existed = check_image_version(
+                kubevirt_operator_image, pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;]
+            )
 
     # Verify longhorn version
     code, pods = api_client.get_pods(namespace=DEFAULT_LONGHORN_NAMESPACE)
@@ -1680,11 +1728,13 @@ def test_verify_deployed_components_version(self, api_client):
 
     for pod in pods[&#39;data&#39;]:
         if &#34;longhorn-manager&#34; in pod[&#39;metadata&#39;][&#39;name&#39;]:
-            longhorn_manager_version_existed = (
-              longhorn_images[&#34;longhorn-manager&#34;] == pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;])
+            longhorn_manager_version_existed = check_image_version(
+              longhorn_images[&#34;longhorn-manager&#34;], pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;]
+            )
         elif &#34;engine-image&#34; in pod[&#39;metadata&#39;][&#39;name&#39;]:
-            engine_image_version_existed = (
-                longhorn_images[&#34;engine-image&#34;] == pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;])
+            engine_image_version_existed = check_image_version(
+                longhorn_images[&#34;engine-image&#34;], pod[&#39;spec&#39;][&#39;containers&#39;][0][&#39;image&#39;]
+            )
 
     assert kubevirt_version_existed, &#34;kubevirt version is not correct&#34;
     assert engine_image_version_existed, &#34;longhorn engine image version is not correct&#34;
@@ -2073,7 +2123,9 @@ Criteria:
 @pytest.mark.negative
 @pytest.mark.any_nodes
 class TestInvalidUpgrade:
-    @pytest.mark.skip_version_if(&#34;&lt; v1.5.0&#34;, reason=&#34;Issue#7654 fix after `v1.5.0`&#34;)
+    @pytest.mark.skip_if_version(
+            &#34;&lt; v1.5.0&#34;,
+            reason=&#34;https://github.com/harvester/harvester/issues/7654 fix after `v1.5.0`&#34;)
     def test_iso_url(self, api_client, unique_name, upgrade_checker):
         &#34;&#34;&#34;
         Steps:
@@ -2103,10 +2155,11 @@ class TestInvalidUpgrade:
         api_client.upgrades.delete(upgrade_name)
         api_client.versions.delete(version)
 
-    @pytest.mark.skip_version_if(&#34;&lt; v1.5.0&#34;, reason=&#34;Issue#7654 fix after `v1.5.0`&#34;)
+    @pytest.mark.skip_if_version(
+            &#34;&lt; v1.5.0&#34;,
+            reason=&#34;https://github.com/harvester/harvester/issues/7654 fix after `v1.5.0`&#34;)
     @pytest.mark.parametrize(
-        &#34;resort&#34;, [slice(None, None, -1), slice(None, None, 2)], ids=(&#34;mismatched&#34;, &#34;invalid&#34;)
-    )
+        &#34;resort&#34;, [slice(None, None, -1), slice(None, None, 2)], ids=(&#34;mismatched&#34;, &#34;invalid&#34;))
     def test_checksum(self, api_client, unique_name, upgrade_target, resort, upgrade_checker):
         version, url, checksum = upgrade_target
         version = f&#34;{version}-{unique_name}&#34;
@@ -2136,7 +2189,7 @@ class TestInvalidUpgrade:
         api_client.upgrades.delete(upgrade_name)
         api_client.versions.delete(version)
 
-    @pytest.mark.skip(&#34;https://github.com/harvester/harvester/issues/5494&#34;)
+    @pytest.mark.skip(reason=&#34;https://github.com/harvester/harvester/issues/5494&#34;)
     def test_version_compatibility(
         self, api_client, unique_name, upgrade_target, upgrade_timeout
     ):
@@ -2244,10 +2297,11 @@ class TestInvalidUpgrade:
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@pytest.mark.skip_version_if(&#34;&lt; v1.5.0&#34;, reason=&#34;Issue#7654 fix after `v1.5.0`&#34;)
+<pre><code class="python">@pytest.mark.skip_if_version(
+        &#34;&lt; v1.5.0&#34;,
+        reason=&#34;https://github.com/harvester/harvester/issues/7654 fix after `v1.5.0`&#34;)
 @pytest.mark.parametrize(
-    &#34;resort&#34;, [slice(None, None, -1), slice(None, None, 2)], ids=(&#34;mismatched&#34;, &#34;invalid&#34;)
-)
+    &#34;resort&#34;, [slice(None, None, -1), slice(None, None, 2)], ids=(&#34;mismatched&#34;, &#34;invalid&#34;))
 def test_checksum(self, api_client, unique_name, upgrade_target, resort, upgrade_checker):
     version, url, checksum = upgrade_target
     version = f&#34;{version}-{unique_name}&#34;
@@ -2367,7 +2421,9 @@ degraded state.
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@pytest.mark.skip_version_if(&#34;&lt; v1.5.0&#34;, reason=&#34;Issue#7654 fix after `v1.5.0`&#34;)
+<pre><code class="python">@pytest.mark.skip_if_version(
+        &#34;&lt; v1.5.0&#34;,
+        reason=&#34;https://github.com/harvester/harvester/issues/7654 fix after `v1.5.0`&#34;)
 def test_iso_url(self, api_client, unique_name, upgrade_checker):
     &#34;&#34;&#34;
     Steps:
@@ -2410,7 +2466,7 @@ def test_iso_url(self, api_client, unique_name, upgrade_checker):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@pytest.mark.skip(&#34;https://github.com/harvester/harvester/issues/5494&#34;)
+<pre><code class="python">@pytest.mark.skip(reason=&#34;https://github.com/harvester/harvester/issues/5494&#34;)
 def test_version_compatibility(
     self, api_client, unique_name, upgrade_target, upgrade_timeout
 ):

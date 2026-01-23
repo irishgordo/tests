@@ -191,7 +191,7 @@ class TestSupportBundle:
         finally:
             support_bundle_state.fio.seek(0)
 
-    @pytest.mark.dependency(depends=[&#34;donwnload support bundle&#34;])
+    @pytest.mark.dependency(depends=[&#34;download support bundle&#34;])
     def test_secret_file_exists(self, support_bundle_state):
         &#39;&#39;&#39; ref: https://github.com/harvester/tests/issues/603 &#39;&#39;&#39;
         pattern = r&#34;^.*/yamls/namespaced/fleet-local/v1/secrets\.yaml&#34;
@@ -220,7 +220,7 @@ class TestSupportBundle:
             f&#34;{fails}&#34;
         )
 
-    @pytest.mark.dependency(depends=[&#34;donwnload support bundle&#34;])
+    @pytest.mark.dependency(depends=[&#34;download support bundle&#34;])
     def test_hardware_info_exists(self, support_bundle_state):
         &#39;&#39;&#39; ref: https://github.com/harvester/tests/issues/569 &#39;&#39;&#39;
         nodes, pattern = [], r&#34;^.*/nodes/.*.zip&#34;
@@ -366,7 +366,7 @@ def test_get(self, api_client, support_bundle_state):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@pytest.mark.dependency(depends=[&#34;donwnload support bundle&#34;])
+<pre><code class="python">@pytest.mark.dependency(depends=[&#34;download support bundle&#34;])
 def test_hardware_info_exists(self, support_bundle_state):
     &#39;&#39;&#39; ref: https://github.com/harvester/tests/issues/569 &#39;&#39;&#39;
     nodes, pattern = [], r&#34;^.*/nodes/.*.zip&#34;
@@ -475,7 +475,7 @@ def test_plan_secrets_exists(self, support_bundle_state):
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">@pytest.mark.dependency(depends=[&#34;donwnload support bundle&#34;])
+<pre><code class="python">@pytest.mark.dependency(depends=[&#34;download support bundle&#34;])
 def test_secret_file_exists(self, support_bundle_state):
     &#39;&#39;&#39; ref: https://github.com/harvester/tests/issues/603 &#39;&#39;&#39;
     pattern = r&#34;^.*/yamls/namespaced/fleet-local/v1/secrets\.yaml&#34;
@@ -519,7 +519,8 @@ def test_secret_file_exists(self, support_bundle_state):
 <pre><code class="python">@pytest.mark.p0
 @pytest.mark.smoke
 @pytest.mark.support_bundle
-@pytest.mark.skip_version_if(&#34;&lt; v1.6.0&#34;, reason=&#34;Issue#7835 new feature in v1.6.0&#34;)
+@pytest.mark.skip_if_version(
+    &#34;&lt; v1.6.0&#34;, reason=&#34;https://github.com/harvester/harvester/issues/7835 new feature in v1.6.0&#34;)
 class TestSupportBundleExpiration:
     @pytest.mark.dependency(name=&#34;create support bundle&#34;)
     def test_create(self, api_client, unique_name, support_bundle_state):
@@ -628,7 +629,8 @@ def test_get(self, api_client, support_bundle_state):
 <pre><code class="python">@pytest.mark.p0
 @pytest.mark.smoke
 @pytest.mark.support_bundle
-@pytest.mark.skip_version_if(&#34;&lt; v1.6.0&#34;, reason=&#34;Issue#7835 new feature in v1.6.0&#34;)
+@pytest.mark.skip_if_version(
+    &#34;&lt; v1.6.0&#34;, reason=&#34;https://github.com/harvester/harvester/issues/7835 new feature in v1.6.0&#34;)
 class TestSupportBundleExtraNamespaces:
     @pytest.mark.dependency(name=&#34;create support bundle&#34;)
     def test_create(self, api_client, unique_name, support_bundle_state):
@@ -665,15 +667,34 @@ class TestSupportBundleExtraNamespaces:
         support_bundle_state.fio.seek(0)
 
     @pytest.mark.dependency(depends=[&#34;download support bundle&#34;])
-    def test_logfile_exists(self, support_bundle_state):
-        patterns = [r&#34;^.*/logs/kube-system/kube-apiserver-.*/kube-apiserver.log&#34;,]
-        matches = []
+    def test_logfile_exists(self, api_client, support_bundle_state):
+        def check_apiserver_log(matches):
+            code, data = api_client.hosts.get()
+            assert 200 == code, (code, data)
+            filenames = [f&#34;{d[&#39;metadata&#39;][&#39;name&#39;]}/kube-apiserver.log&#34; for d in data[&#39;data&#39;]
+                         if &#39;node-role.kubernetes.io/control-plane&#39; in d[&#39;metadata&#39;][&#39;labels&#39;]]
+            is_matched = all(any(m.endswith(n) for m in matches) for n in filenames)
+            return is_matched, filenames
+
+        patterns = {
+            # pattern: checker -&gt; (bool, [tuple|list])
+            r&#34;^.*/logs/kube-system/kube-apiserver-.*/kube-apiserver\.log$&#34;: check_apiserver_log,
+        }
+        matches = dict()
         for f in support_bundle_state.files:
             for pattern in patterns:
-                matches.extend([f] if re.match(pattern, f) else [])
+                matches[pattern] = matches.get(pattern, []) + ([f] if re.match(pattern, f) else [])
 
-        assert len(matches) == len(patterns), (
-            f&#34;Some file(s) not found, files: {matches}\npatterns: {patterns}&#34;
+        fails = []
+        for pattern, checker in patterns.items():
+            files = matches.get(pattern, [])
+            is_matched, expected = checker(files)
+            if not is_matched:
+                fails.append((pattern, expected, files))
+
+        assert not fails, (
+            &#34;Some expected file(s) not found:\n&#34;
+            &#34;\n&#34;.join(&#34;Pattern: {}, Expected: {}, Got: {}&#34;.format(*s) for s in fails)
         )
 
     @pytest.mark.dependency(depends=[&#34;get support bundle&#34;])
@@ -775,7 +796,7 @@ def test_get(self, api_client, support_bundle_state):
 <div class="desc"></div>
 </dd>
 <dt id="harvester_e2e_tests.apis.test_support_bundle.TestSupportBundleExtraNamespaces.test_logfile_exists"><code class="name flex">
-<span>def <span class="ident">test_logfile_exists</span></span>(<span>self, support_bundle_state)</span>
+<span>def <span class="ident">test_logfile_exists</span></span>(<span>self, api_client, support_bundle_state)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -783,15 +804,34 @@ def test_get(self, api_client, support_bundle_state):
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@pytest.mark.dependency(depends=[&#34;download support bundle&#34;])
-def test_logfile_exists(self, support_bundle_state):
-    patterns = [r&#34;^.*/logs/kube-system/kube-apiserver-.*/kube-apiserver.log&#34;,]
-    matches = []
+def test_logfile_exists(self, api_client, support_bundle_state):
+    def check_apiserver_log(matches):
+        code, data = api_client.hosts.get()
+        assert 200 == code, (code, data)
+        filenames = [f&#34;{d[&#39;metadata&#39;][&#39;name&#39;]}/kube-apiserver.log&#34; for d in data[&#39;data&#39;]
+                     if &#39;node-role.kubernetes.io/control-plane&#39; in d[&#39;metadata&#39;][&#39;labels&#39;]]
+        is_matched = all(any(m.endswith(n) for m in matches) for n in filenames)
+        return is_matched, filenames
+
+    patterns = {
+        # pattern: checker -&gt; (bool, [tuple|list])
+        r&#34;^.*/logs/kube-system/kube-apiserver-.*/kube-apiserver\.log$&#34;: check_apiserver_log,
+    }
+    matches = dict()
     for f in support_bundle_state.files:
         for pattern in patterns:
-            matches.extend([f] if re.match(pattern, f) else [])
+            matches[pattern] = matches.get(pattern, []) + ([f] if re.match(pattern, f) else [])
 
-    assert len(matches) == len(patterns), (
-        f&#34;Some file(s) not found, files: {matches}\npatterns: {patterns}&#34;
+    fails = []
+    for pattern, checker in patterns.items():
+        files = matches.get(pattern, [])
+        is_matched, expected = checker(files)
+        if not is_matched:
+            fails.append((pattern, expected, files))
+
+    assert not fails, (
+        &#34;Some expected file(s) not found:\n&#34;
+        &#34;\n&#34;.join(&#34;Pattern: {}, Expected: {}, Got: {}&#34;.format(*s) for s in fails)
     )</code></pre>
 </details>
 <div class="desc"></div>
@@ -810,7 +850,8 @@ def test_logfile_exists(self, support_bundle_state):
 @pytest.mark.sanity
 @pytest.mark.negative
 @pytest.mark.support_bundle
-@pytest.mark.skip_version_if(&#34;&lt; v1.6.0&#34;, reason=&#34;Issue#7835 new feature in v1.6.0&#34;)
+@pytest.mark.skip_if_version(
+    &#34;&lt; v1.6.0&#34;, reason=&#34;https://github.com/harvester/harvester/issues/7835 new feature in v1.6.0&#34;)
 class TestSupportBundleInvalidExtraCollectionNamespaces:
     def test_create_invalid_extra_collection_namespaces(
         self, api_client, unique_name, support_bundle_state
@@ -990,7 +1031,8 @@ class TestSupportBundleNegative:
 <pre><code class="python">@pytest.mark.p0
 @pytest.mark.smoke
 @pytest.mark.support_bundle
-@pytest.mark.skip_version_if(&#34;&lt; v1.6.0&#34;, reason=&#34;Issue#7835 new feature in v1.6.0&#34;)
+@pytest.mark.skip_if_version(
+    &#34;&lt; v1.6.0&#34;, reason=&#34;https://github.com/harvester/harvester/issues/7835 new feature in v1.6.0&#34;)
 class TestSupportBundleTimeout:
     @pytest.mark.dependency(name=&#34;create support bundle&#34;)
     def test_create(self, api_client, unique_name, support_bundle_state):
