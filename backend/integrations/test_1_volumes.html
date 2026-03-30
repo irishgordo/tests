@@ -79,8 +79,8 @@ def test_concurrent_volume_creation(api_client, ubuntu_image, concurrent_count, 
 
     def create_single_volume(vol_name):
         try:
-            spec = api_client.volumes.Spec(&#34;5Gi&#34;)  # Smaller size for faster creation
-            code, data = api_client.volumes.create(vol_name, spec, image_id=ubuntu_image[&#39;id&#39;])
+            spec = api_client.volumes.Spec.for_image(ubuntu_image[&#39;info&#39;])
+            code, data = api_client.volumes.create(vol_name, spec)
 
             if code == 201:
                 # Wait for volume to be bound
@@ -176,18 +176,18 @@ def test_create_volume(api_client, unique_name, ubuntu_image, create_as, source_
     9. Delete volume should reply 404 after delete
     Ref.
     &#34;&#34;&#34;
-    image_id, storage_cls = None, None
     if source_type == &#34;VM Image&#34;:
-        image_id, storage_cls = ubuntu_image[&#39;id&#39;], f&#34;longhorn-{ubuntu_image[&#39;display_name&#39;]}&#34;
+        spec = api_client.volumes.Spec.for_image(ubuntu_image[&#39;info&#39;])
+    else:
+        spec = api_client.volumes.Spec(&#34;10Gi&#34;)
 
-    spec = api_client.volumes.Spec(&#34;10Gi&#34;, storage_cls)
     if create_as == &#39;yaml&#39;:
         kws = dict(headers={&#39;Content-Type&#39;: &#39;application/yaml&#39;}, json=None,
-                   data=yaml.dump(spec.to_dict(unique_name, &#39;default&#39;, image_id=image_id)))
+                   data=yaml.dump(spec.to_dict(unique_name, &#39;default&#39;)))
     else:
         kws = dict()
-    code, data = api_client.volumes.create(unique_name, spec, image_id=image_id, **kws)
-    assert 201 == code, (code, unique_name, data, image_id)
+    code, data = api_client.volumes.create(unique_name, spec, **kws)
+    assert 201 == code, (code, unique_name, data, spec.to_dict(unique_name, &#39;default&#39;))
 
     polling_for(&#34;volume do created&#34;,
                 lambda code, data: 200 == code and data[&#39;status&#39;][&#39;phase&#39;] == &#34;Bound&#34;,
@@ -208,7 +208,7 @@ def test_create_volume(api_client, unique_name, ubuntu_image, create_as, source_
     assert data[&#39;status&#39;][&#39;phase&#39;] == &#34;Bound&#34;, (code, data)
     # source
     if source_type == &#34;VM Image&#34;:
-        assert image_id == annotations[&#39;harvesterhci.io/imageId&#39;], (code, data)
+        assert ubuntu_image[&#39;id&#39;] == annotations[&#39;harvesterhci.io/imageId&#39;], (code, data)
     else:
         assert not annotations.get(&#39;harvesterhci.io/imageId&#39;), (code, data)
     # teardown
@@ -254,19 +254,21 @@ def test_create_volume_bad_checksum(api_client, unique_name, ubuntu_image_bad_ch
     7. Delete volume should reply 404 after delete
     Ref. https://github.com/harvester/tests/issues/1121
     &#34;&#34;&#34;
-    image_id, storage_cls = None, None
-    if source_type == &#34;VM Image&#34;:
-        image_id, storage_cls = ubuntu_image_bad_checksum[&#39;id&#39;], \
-            f&#34;longhorn-{ubuntu_image_bad_checksum[&#39;display_name&#39;]}&#34;
+    options = dict()
+    spec = api_client.volumes.Spec(&#34;10Gi&#34;)
 
-    spec = api_client.volumes.Spec(&#34;10Gi&#34;, storage_cls)
+    if source_type == &#34;VM Image&#34;:
+        options.update(
+            image_id=ubuntu_image_bad_checksum[&#39;id&#39;],
+            image_uid=ubuntu_image_bad_checksum[&#39;info&#39;][&#39;metadata&#39;][&#39;uid&#39;]
+        )
     if create_as == &#39;yaml&#39;:
         kws = dict(headers={&#39;Content-Type&#39;: &#39;application/yaml&#39;}, json=None,
-                   data=yaml.dump(spec.to_dict(unique_name, &#39;default&#39;, image_id=image_id)))
+                   data=yaml.dump(spec.to_dict(unique_name, &#39;default&#39;, **options)))
     else:
         kws = dict()
-    code, data = api_client.volumes.create(unique_name, spec, image_id=image_id, **kws)
-    assert 201 == code, (code, unique_name, data, image_id)
+    code, data = api_client.volumes.create(unique_name, spec, **options, **kws)
+    assert 201 == code, (code, unique_name, data, options)
 
     polling_for(&#34;volume do created&#34;,
                 lambda code, data: 200 == code and data[&#39;status&#39;][&#39;phase&#39;] == &#34;Bound&#34;,
@@ -314,8 +316,8 @@ Ref. <a href="https://github.com/harvester/tests/issues/1121">https://github.com
     {&#34;size&#34;: &#34;invalid_size&#34;, &#34;error_msg&#34;: &#34;quantities must match&#34;},
     pytest.param(
         {&#34;size&#34;: &#34;999999Ti&#34;, &#34;error_msg&#34;: &#34;exceeds cluster capacity&#34;},
-        marks=pytest.mark.xfail_if_version(
-            &#34;&gt;= v1.6.1&#34;, reason=&#34;https://github.com/harvester/harvester/issues/9268 since v1.6.1&#34;)
+        marks=pytest.mark.xfail(
+            reason=&#34;https://github.com/harvester/harvester/issues/9268&#34;)
     )],
     ids=[&#39;zero_size&#39;, &#39;negative_size&#39;, &#39;not_number&#39;, &#39;too_large_size&#39;])
 def test_create_volume_invalid_specifications(api_client, gen_unique_name, invalid_spec):
@@ -361,6 +363,99 @@ def test_create_volume_invalid_specifications(api_client, gen_unique_name, inval
 - Invalid size format should be rejected
 - Excessively large volumes should be rejected</p></div>
 </dd>
+<dt id="harvester_e2e_tests.integrations.test_1_volumes.test_create_volume_snapshot_and_restore"><code class="name flex">
+<span>def <span class="ident">test_create_volume_snapshot_and_restore</span></span>(<span>api_client, unique_name, ubuntu_image, source_type, volume_checker, wait_timeout)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@pytest.mark.p1
+@pytest.mark.sanity
+@pytest.mark.volumes
+@pytest.mark.parametrize(&#34;source_type&#34;, [&#34;Empty&#34;, &#34;VM Image&#34;])
+def test_create_volume_snapshot_and_restore(
+    api_client, unique_name, ubuntu_image, source_type, volume_checker, wait_timeout
+):
+    &#34;&#34;&#34;
+    1. Create a volume from source_type(Empty or VM Image)
+    2. Wait the volume become ready
+    3. Create a snapshot of the volume
+    4. Wait the snapshot become ready
+    5. Restore the snapshot
+    6. Wait the restored volume become ready, check the data resource as expected
+    7. Delete source volume, the snapshot should be deleted
+    Ref. https://github.com/harvester/harvester/issues/2294
+    &#34;&#34;&#34;
+    image_id = None
+    if source_type == &#34;VM Image&#34;:
+        image_id = ubuntu_image[&#39;id&#39;]
+        unique_name = f&#34;{unique_name}-image&#34;
+
+    # Create a volume from source_type(Empty or VM Image)
+    spec = api_client.volumes.Spec(&#34;10Gi&#34;, storage_cls=None)
+    kws = dict()
+    code, data = api_client.volumes.create(unique_name, spec, image_id=image_id, **kws)
+    assert 201 == code, (code, unique_name, data, image_id)
+
+    # Wait the volume become ready
+    volumes_ready, (code, data) = volume_checker.wait_volumes_ready([unique_name])
+    assert volumes_ready, (code, data)
+
+    # Create a snapshot of the volume
+    snapshot_name = f&#34;{unique_name}-snapshot&#34;
+    code, _ = api_client.volumes.snapshot(unique_name, snapshot_name)
+    assert 204 == code, (f&#34;Failed to create snapshot of volume {unique_name}&#34;)
+
+    # Wait the snapshot become ready
+    endtime = datetime.now() + timedelta(seconds=wait_timeout)
+    while endtime &gt; datetime.now():
+        code, data = api_client.vol_snapshots.get(snapshot_name)
+        if code == 200 and data.get(&#39;status&#39;, {}).get(&#39;readyToUse&#39;, False):
+            break
+        sleep(3)
+    else:
+        raise AssertionError(
+            f&#34;Timeout in waiting the snapshot {snapshot_name} to be ready.\n&#34;
+            f&#34;Last API Status({code}): {data}&#34;
+            )
+
+    # Restore the snapshot
+    restore_vol_name = f&#34;{snapshot_name}-restore&#34;
+    code, _ = api_client.vol_snapshots.restore(snapshot_name, restore_vol_name)
+    assert 204 == code, (
+        f&#34;Failed to restore snapshot {snapshot_name} to volume {restore_vol_name}&#34;)
+
+    # Wait the restored volume become ready, check the data resource as expected
+    volumes_ready, (code, data) = volume_checker.wait_volumes_ready([restore_vol_name])
+    assert volumes_ready, (code, data)
+    data_source = data.get(&#39;spec&#39;, {}).get(&#39;dataSource&#39;, {}).get(&#39;name&#39;)
+    assert snapshot_name == data_source, (
+        f&#34;Data source mismatch. Expected {snapshot_name}, got {data_source}&#34;)
+
+    # Delete source volume, check the snapshot is deleted
+    volumes_deleted, (code, data) = volume_checker.wait_volumes_deleted([unique_name])
+    assert volumes_deleted, (code, data)
+
+    code, data = api_client.vol_snapshots.get(snapshot_name)
+    assert 404 == code, (code, data)
+
+    # Teardown: delete the restore volume
+    volumes_deleted, (code, data) = volume_checker.wait_volumes_deleted([restore_vol_name])
+    assert volumes_deleted, (code, data)</code></pre>
+</details>
+<div class="desc"><ol>
+<li>Create a volume from source_type(Empty or VM Image)</li>
+<li>Wait the volume become ready</li>
+<li>Create a snapshot of the volume</li>
+<li>Wait the snapshot become ready</li>
+<li>Restore the snapshot</li>
+<li>Wait the restored volume become ready, check the data resource as expected</li>
+<li>Delete source volume, the snapshot should be deleted
+Ref. <a href="https://github.com/harvester/harvester/issues/2294">https://github.com/harvester/harvester/issues/2294</a></li>
+</ol></div>
+</dd>
 <dt id="harvester_e2e_tests.integrations.test_1_volumes.test_delete_volume_when_exporting"><code class="name flex">
 <span>def <span class="ident">test_delete_volume_when_exporting</span></span>(<span>api_client, unique_name, ubuntu_image, polling_for)</span>
 </code></dt>
@@ -378,9 +473,9 @@ def test_delete_volume_when_exporting(api_client, unique_name, ubuntu_image, pol
     # ref: https://github.com/harvester/tests/issues/1057
 
     # image id must follow RFC1123 which ends with alphanumeric char
-    spec = api_client.volumes.Spec(&#39;10Gi&#39;)
+    spec = api_client.volumes.Spec.for_image(ubuntu_image[&#39;info&#39;])
     # create volume from image
-    code, data = api_client.volumes.create(unique_name, spec, image_id=ubuntu_image[&#39;id&#39;])
+    code, data = api_client.volumes.create(unique_name, spec)
     assert 201 == code, (code, data)
     polling_for(&#34;volume do created&#34;,
                 lambda code, data: 200 == code and data[&#39;status&#39;][&#39;phase&#39;] == &#34;Bound&#34;,
@@ -428,7 +523,8 @@ def test_volume_resize_operations(api_client, unique_name, ubuntu_image, polling
 
     # Create initial volume
     spec = api_client.volumes.Spec(initial_size)
-    code, data = api_client.volumes.create(unique_name, spec, image_id=ubuntu_image[&#39;id&#39;])
+    options = dict(image_id=ubuntu_image[&#39;id&#39;], image_uid=ubuntu_image[&#39;info&#39;][&#39;metadata&#39;][&#39;uid&#39;])
+    code, data = api_client.volumes.create(unique_name, spec, **options)
     assert 201 == code, f&#34;Initial volume creation failed: {code}, {data}&#34;
 
     # Wait for initial volume to be bound
@@ -524,12 +620,11 @@ def test_volume_shrink_not_allowed(api_client, unique_name, ubuntu_image, pollin
     4. Verify operation fails with appropriate error
     5. Confirm volume size remains unchanged
     &#34;&#34;&#34;
-    initial_size = &#34;5Gi&#34;
-    shrink_size = &#34;1Gi&#34;
-
     # Create initial volume
-    spec = api_client.volumes.Spec(initial_size)
-    code, data = api_client.volumes.create(unique_name, spec, image_id=ubuntu_image[&#39;id&#39;])
+    spec = api_client.volumes.Spec.for_image(ubuntu_image[&#39;info&#39;])
+    initial_size, shrink_size = f&#34;{spec.size}Gi&#34;, f&#34;{spec.size // 2}Gi&#34;
+
+    code, data = api_client.volumes.create(unique_name, spec)
     assert 201 == code, f&#34;Initial volume creation failed: {code}, {data}&#34;
 
     # Wait for volume to be bound
@@ -616,7 +711,10 @@ def ubuntu_image(api_client, unique_name, image_ubuntu, polling_for):
 
     namespace = data[&#39;metadata&#39;][&#39;namespace&#39;]
     name = data[&#39;metadata&#39;][&#39;name&#39;]
-    yield dict(ssh_user=image_ubuntu.ssh_user, id=f&#34;{namespace}/{name}&#34;, display_name=image_name)
+    yield dict(
+        ssh_user=image_ubuntu.ssh_user, id=f&#34;{namespace}/{name}&#34;, display_name=image_name,
+        info=dict(metadata=data[&#39;metadata&#39;], status=data[&#39;status&#39;])
+    )
 
     code, data = api_client.images.get(image_name)
     if 200 == code:
@@ -669,7 +767,10 @@ def ubuntu_image_bad_checksum(api_client, unique_name, image_ubuntu, polling_for
                              api_client.images.get, image_name)
     namespace = data[&#39;metadata&#39;][&#39;namespace&#39;]
     name = data[&#39;metadata&#39;][&#39;name&#39;]
-    yield dict(ssh_user=image_ubuntu.ssh_user, id=f&#34;{namespace}/{name}&#34;, display_name=image_name)
+    yield dict(
+        ssh_user=image_ubuntu.ssh_user, id=f&#34;{namespace}/{name}&#34;, display_name=image_name,
+        info=dict(metadata=data[&#39;metadata&#39;], status=data[&#39;status&#39;])
+    )
     code, data = api_client.images.get(image_name)
     if 200 == code:
         code, data = api_client.images.delete(image_name)
@@ -780,26 +881,29 @@ class TestVolumeWithVM:
     def test_delete_volume_on_existing_vm(self, api_client, ubuntu_image, ubuntu_vm, polling_for):
         &#34;&#34;&#34;
         1. Create a VM with volume
-        2. Delete volume should reply 422
+        2. Delete volume should reply 422 or 409
         3. Pause VM
-        4. Delete volume should reply 422 too
+        4. Delete volume should reply 422 or 409
         5. Stop VM
-        6. Delete volume should reply 422 too
+        6. Delete volume should reply 422 or 409
         Ref. https://github.com/harvester/tests/issues/905
+             https://github.com/harvester/harvester/issues/10222
         &#34;&#34;&#34;
         vol_name = (ubuntu_vm[&#34;spec&#34;][&#34;template&#34;][&#34;spec&#34;][&#34;volumes&#34;][0]
                              [&#39;persistentVolumeClaim&#39;][&#39;claimName&#39;])
 
+        # Expect failure - common error codes for invalid operations
+        expected_error_codes = [422, 409]
         code, data = api_client.volumes.delete(vol_name)
-        assert 422 == code, f&#34;Should fail to delete volume\n{code}, {data}&#34;
+        assert code in expected_error_codes, f&#34;Should fail to delete volume\n{code}, {data}&#34;
 
         self.pause_vm(api_client, ubuntu_vm, polling_for)
         code, data = api_client.volumes.delete(vol_name)
-        assert 422 == code, f&#34;Should fail to delete volume\n{code}, {data}&#34;
+        assert code in expected_error_codes, f&#34;Should fail to delete volume\n{code}, {data}&#34;
 
         self.stop_vm(api_client, ubuntu_vm, polling_for)
         code, data = api_client.volumes.delete(vol_name)
-        assert 422 == code, f&#34;Should fail to delete volume\n{code}, {data}&#34;
+        assert code in expected_error_codes, f&#34;Should fail to delete volume\n{code}, {data}&#34;
 
         # Check Volume
         code, data = api_client.volumes.get(vol_name)
@@ -959,26 +1063,29 @@ Ref. <a href="https://github.com/harvester/tests/issues/652">https://github.com/
 <pre><code class="python">def test_delete_volume_on_existing_vm(self, api_client, ubuntu_image, ubuntu_vm, polling_for):
     &#34;&#34;&#34;
     1. Create a VM with volume
-    2. Delete volume should reply 422
+    2. Delete volume should reply 422 or 409
     3. Pause VM
-    4. Delete volume should reply 422 too
+    4. Delete volume should reply 422 or 409
     5. Stop VM
-    6. Delete volume should reply 422 too
+    6. Delete volume should reply 422 or 409
     Ref. https://github.com/harvester/tests/issues/905
+         https://github.com/harvester/harvester/issues/10222
     &#34;&#34;&#34;
     vol_name = (ubuntu_vm[&#34;spec&#34;][&#34;template&#34;][&#34;spec&#34;][&#34;volumes&#34;][0]
                          [&#39;persistentVolumeClaim&#39;][&#39;claimName&#39;])
 
+    # Expect failure - common error codes for invalid operations
+    expected_error_codes = [422, 409]
     code, data = api_client.volumes.delete(vol_name)
-    assert 422 == code, f&#34;Should fail to delete volume\n{code}, {data}&#34;
+    assert code in expected_error_codes, f&#34;Should fail to delete volume\n{code}, {data}&#34;
 
     self.pause_vm(api_client, ubuntu_vm, polling_for)
     code, data = api_client.volumes.delete(vol_name)
-    assert 422 == code, f&#34;Should fail to delete volume\n{code}, {data}&#34;
+    assert code in expected_error_codes, f&#34;Should fail to delete volume\n{code}, {data}&#34;
 
     self.stop_vm(api_client, ubuntu_vm, polling_for)
     code, data = api_client.volumes.delete(vol_name)
-    assert 422 == code, f&#34;Should fail to delete volume\n{code}, {data}&#34;
+    assert code in expected_error_codes, f&#34;Should fail to delete volume\n{code}, {data}&#34;
 
     # Check Volume
     code, data = api_client.volumes.get(vol_name)
@@ -994,12 +1101,13 @@ Ref. <a href="https://github.com/harvester/tests/issues/652">https://github.com/
 </details>
 <div class="desc"><ol>
 <li>Create a VM with volume</li>
-<li>Delete volume should reply 422</li>
+<li>Delete volume should reply 422 or 409</li>
 <li>Pause VM</li>
-<li>Delete volume should reply 422 too</li>
+<li>Delete volume should reply 422 or 409</li>
 <li>Stop VM</li>
-<li>Delete volume should reply 422 too
-Ref. <a href="https://github.com/harvester/tests/issues/905">https://github.com/harvester/tests/issues/905</a></li>
+<li>Delete volume should reply 422 or 409
+Ref. <a href="https://github.com/harvester/tests/issues/905">https://github.com/harvester/tests/issues/905</a>
+<a href="https://github.com/harvester/harvester/issues/10222">https://github.com/harvester/harvester/issues/10222</a></li>
 </ol></div>
 </dd>
 </dl>
@@ -1023,6 +1131,7 @@ Ref. <a href="https://github.com/harvester/tests/issues/905">https://github.com/
 <li><code><a title="harvester_e2e_tests.integrations.test_1_volumes.test_create_volume" href="#harvester_e2e_tests.integrations.test_1_volumes.test_create_volume">test_create_volume</a></code></li>
 <li><code><a title="harvester_e2e_tests.integrations.test_1_volumes.test_create_volume_bad_checksum" href="#harvester_e2e_tests.integrations.test_1_volumes.test_create_volume_bad_checksum">test_create_volume_bad_checksum</a></code></li>
 <li><code><a title="harvester_e2e_tests.integrations.test_1_volumes.test_create_volume_invalid_specifications" href="#harvester_e2e_tests.integrations.test_1_volumes.test_create_volume_invalid_specifications">test_create_volume_invalid_specifications</a></code></li>
+<li><code><a title="harvester_e2e_tests.integrations.test_1_volumes.test_create_volume_snapshot_and_restore" href="#harvester_e2e_tests.integrations.test_1_volumes.test_create_volume_snapshot_and_restore">test_create_volume_snapshot_and_restore</a></code></li>
 <li><code><a title="harvester_e2e_tests.integrations.test_1_volumes.test_delete_volume_when_exporting" href="#harvester_e2e_tests.integrations.test_1_volumes.test_delete_volume_when_exporting">test_delete_volume_when_exporting</a></code></li>
 <li><code><a title="harvester_e2e_tests.integrations.test_1_volumes.test_volume_resize_operations" href="#harvester_e2e_tests.integrations.test_1_volumes.test_volume_resize_operations">test_volume_resize_operations</a></code></li>
 <li><code><a title="harvester_e2e_tests.integrations.test_1_volumes.test_volume_shrink_not_allowed" href="#harvester_e2e_tests.integrations.test_1_volumes.test_volume_shrink_not_allowed">test_volume_shrink_not_allowed</a></code></li>
