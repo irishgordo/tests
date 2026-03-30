@@ -68,7 +68,7 @@ The makefile allows you to do the following
 - `make all`
      - This will create all of the docs sites and put them into `docs/public/`
 - `make run-docs`
-     - This will clean out all of the directories, then generate backend and frontend docs, then generate a hugo server that outputs at `/tmp/hugo/` and run a local web server that you can use to look at all of the docs locally. 
+     - This will clean out all of the directories, then generate backend and frontend docs, then generate a hugo server that outputs at `/tmp/hugo/` and run a local web server that you can use to look at all of the docs locally.
      - It will auto-regenerate any hugo manual tests, but won't update with the backend and frontend in real time. You will have to run it again.
 - `make backend`
      - this will generate the docs for the Python e2e tests. They will generate at `harvester_e2e_tests/harvester_e2e_tests/`
@@ -99,7 +99,7 @@ The (e2e) tests are expected to be ran against a given Harvester cluster. In add
 ## Configure Options in config.yml <a name="configure_options" />
 The section is targeting to explain configure options and test cases depends on.
 Notice that configuration options in [config.yml](config.yml) can be overwritten by command line parameters.
-For example, to overwrite the `endpoint` option, we can use the `--endpoint` parameter while running the tests. 
+For example, to overwrite the `endpoint` option, we can use the `--endpoint` parameter while running the tests.
 
 ### Deprecated Config Options <a name="deprecated_config" />
 - `do-not-cleanup`
@@ -292,3 +292,71 @@ There is a test skel spec to use as a template in `tests/cypress/skel/`.
 [terraform]: https://www.terraform.io/
 [AWS S3]: https://aws.amazon.com/s3/
 [Harvester manual test cases]: https://github.com/harvester/tests/tree/main/docs/content/manual
+
+
+# Build `requirements.txt` for Robot or `test-requirements.txt` for base tests:
+- `pip3 install pip-tools==7.5.3` locally
+- `pip-compile --generate-hashes test-requirements.in -o test-requirements.txt`
+
+# Updating the internal `harvester_api` package (apiclient)
+
+The `apiclient/` directory contains the internal `harvester_api` Python package that is used by the tests. This package is distributed as a wheel file with hash verification in `test-requirements.txt`.
+
+## When to rebuild the wheel
+
+You need to rebuild the wheel whenever you make changes to:
+- Any Python code in `apiclient/harvester_api/`
+- Any Python code in `apiclient/rancher_api/`
+- The `apiclient/setup.py` file
+
+## Steps to rebuild and update the wheel
+
+1. **Navigate to the apiclient directory:**
+   ```bash
+   cd apiclient/
+   ```
+
+2. **Remove the old wheel (if it exists):**
+   ```bash
+   rm -rf dist/ build/ *.egg-info/
+   ```
+
+3. **Build the new wheel:**
+   ```bash
+   python3 -m build --wheel
+   ```
+   This creates a new wheel at `dist/harvester_api-0.1.0-py3-none-any.whl`
+
+4. **Go back to the tests directory:**
+   ```bash
+   cd ..
+   ```
+
+5. **Regenerate test-requirements.txt with the new hash:**
+   ```bash
+   pip-compile --generate-hashes test-requirements.in -o test-requirements.txt
+   ```
+
+6. **Fix the absolute path in test-requirements.txt:**
+
+   pip-compile will generate an absolute path like:
+   ```
+   harvester-api @ file:///home/user/path/to/apiclient/dist/harvester_api-0.1.0-py3-none-any.whl
+   ```
+
+   You need to manually change it to a relative path:
+   ```
+   ./apiclient/dist/harvester_api-0.1.0-py3-none-any.whl
+   ```
+
+7. **Commit both files:**
+   ```bash
+   git add apiclient/dist/harvester_api-0.1.0-py3-none-any.whl test-requirements.txt
+   git commit -m "Update harvester_api internal package"
+   ```
+
+## Notes
+
+- The wheel file is committed to the repository so it can be installed with hash verification
+- If you update the version in `apiclient/setup.py`, update the filename references in `test-requirements.in` accordingly
+- The hash will change every time the wheel is rebuilt, even for the same code, due to timestamps in the wheel metadata
