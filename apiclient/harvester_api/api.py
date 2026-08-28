@@ -14,6 +14,8 @@ def _normalize_version(version):
     # release-[any]-head => [any]-head
     # master-SHA-head => v8.8-SHA-head
     # [version]-SHA-head => [version]+SHA-head
+    # Handle local build metadata like v1.9.0_isim -> v1.9.0+isim (PEP 440 compliant)
+    version = version.replace("_", "+")
     ver = re.sub(r"^(?:release-v?(.+head))$", r"v\1", version)
     ver = re.sub(r"^master(-.+)$", r"v8.8\1", ver)
     ver = re.sub(r"(.+)-([^-]+?-head)$", r"\1+\2", ver)
